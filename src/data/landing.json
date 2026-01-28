@@ -11,13 +11,13 @@
   },
   "header": {
     "ctaText": "Download aira Beta",
-    "ctaHref": "#"
+    "ctaHref": "https://github.com/AAgrandprix/virtual-robot-race/tree/main/Project_Beta"
   },
   "hero": {
     "tagline": "Race Your Algorithm.",
     "subtitle": "The ultimate playground for AI learners and researchers\nto master decision-making under constraints.",
-    "primaryCTA": { "text": "Download aira Beta", "href": "#" },
-    "secondaryCTA": { "text": "YouTube", "href": "https://www.youtube.com/@AAgrandprix" }
+    "primaryCTA": { "text": "Download aira Beta", "href": "https://github.com/AAgrandprix/virtual-robot-race/tree/main/Project_Beta" },
+    "secondaryCTA": { "text": "YouTube", "href": "https://www.youtube.com/@RaceYourAlgo" }
   },
   "mission": {
     "headline": "Intelligence over Velocity",
@@ -137,9 +137,9 @@
   "footer": {
     "copyright": "© 2026 aira-race.com",
     "links": [
-      { "text": "GitHub", "href": "https://github.com/AAgrandprix" },
-      { "text": "YouTube", "href": "https://www.youtube.com/@AAgrandprix" },
-      { "text": "X", "href": "#" }
+      { "text": "GitHub", "href": "https://github.com/AAgrandprix/virtual-robot-race/tree/main/Project_Beta" },
+      { "text": "YouTube", "href": "https://www.youtube.com/@RaceYourAlgo" },
+      { "text": "X", "href": "https://x.com/RaceYourAlgo" }
     ]
   }
 }
