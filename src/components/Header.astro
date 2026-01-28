@@ -1,0 +1,23 @@
+---
+interface Props {
+  siteName: string;
+  ctaText: string;
+  ctaHref: string;
+}
+
+const { siteName, ctaText, ctaHref } = Astro.props;
+---
+
+<header class="fixed top-0 left-0 right-0 z-50 bg-slate-950/80 backdrop-blur-lg border-b border-slate-800/50">
+  <div class="max-w-5xl mx-auto px-4 sm:px-6 flex items-center justify-between h-14">
+    <a href="/" class="text-white font-bold text-lg tracking-tight">
+      {siteName}
+    </a>
+    <a
+      href={ctaHref}
+      class="inline-flex items-center px-4 py-2 text-sm font-semibold text-white bg-blue-600 rounded-lg hover:bg-blue-500 transition-colors"
+    >
+      {ctaText}
+    </a>
+  </div>
+</header>

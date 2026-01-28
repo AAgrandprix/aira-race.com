@@ -1,0 +1,34 @@
+---
+import SEOHead from '../components/SEOHead.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  canonicalUrl?: string;
+  ogImage?: string;
+  siteName?: string;
+  ogTitle?: string;
+  ogDescription?: string;
+  twitterHandle?: string;
+  lang?: string;
+}
+
+const props = Astro.props;
+const lang = props.lang || 'en';
+---
+
+<!doctype html>
+<html lang={lang} class="scroll-smooth">
+  <head>
+    <SEOHead {...props} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-slate-950 text-slate-300 antialiased font-sans">
+    <slot />
+  </body>
+</html>

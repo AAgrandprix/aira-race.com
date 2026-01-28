@@ -1,0 +1,145 @@
+{
+  "site": {
+    "name": "aira",
+    "title": "aira | Race Your Algorithm – Virtual Robot Racing Platform",
+    "description": "The ultimate playground for AI learners and researchers. Control virtual robots with Python, optimize energy usage (SOC), and master explainable AI.",
+    "url": "https://aira-race.com",
+    "ogImage": "/og-image.png",
+    "lang": "en",
+    "ogTitle": "aira – Race Your Algorithm",
+    "ogDescription": "Join the virtual race where strategy outweighs speed. Optimize your Python algorithms and achieve a perfect SOC ≈ 0 finish."
+  },
+  "header": {
+    "ctaText": "Download aira Beta",
+    "ctaHref": "#"
+  },
+  "hero": {
+    "tagline": "Race Your Algorithm.",
+    "subtitle": "The ultimate playground for AI learners and researchers\nto master decision-making under constraints.",
+    "primaryCTA": { "text": "Download aira Beta", "href": "#" },
+    "secondaryCTA": { "text": "YouTube", "href": "https://www.youtube.com/@AAgrandprix" }
+  },
+  "mission": {
+    "headline": "Intelligence over Velocity",
+    "paragraphs": [
+      {
+        "text": "In the aira ecosystem, winning isn't just about being fast — it's about being smart."
+      },
+      {
+        "text": "Master the art of power management. Your mission is not just to reach the end, but to calculate every move so you cross the finish line just as your battery hits 0%. Your AI's success depends on these strategic decisions."
+      },
+      {
+        "text": "Every action must be explainable.\nMake every bit of power count.",
+        "style": "accent"
+      },
+      {
+        "text": "Speed is a result.\nIntelligence is the strategy.",
+        "style": "strong"
+      }
+    ]
+  },
+  "workflow": {
+    "title": "How it Works",
+    "steps": [
+      {
+        "number": 1,
+        "title": "Get the Code",
+        "description": "Clone the repository from GitHub to get the latest aira environment."
+      },
+      {
+        "number": 2,
+        "title": "Setup in Seconds",
+        "description": "Run the .bat file for an instant, automatic installation (optimized for Windows 10/11)."
+      },
+      {
+        "number": 3,
+        "title": "Launch & Explore",
+        "description": "Open the simulator and take immediate control of your robot."
+      },
+      {
+        "number": 4,
+        "title": "Develop Your Algorithm",
+        "description": "Edit your Python code, refine your strategy, and see your algorithm evolve on the track."
+      }
+    ]
+  },
+  "techSpecs": {
+    "title": "Core Features",
+    "items": [
+      {
+        "title": "From Manual to Autonomous",
+        "description": "Start with simple keyboard control to understand the physics, then progress to writing your first autonomous Python scripts."
+      },
+      {
+        "title": "Physics-Driven Simulation",
+        "description": "Realistic vehicle dynamics, including torque-steer behavior."
+      },
+      {
+        "title": "Explainability-First Design (XAI)",
+        "description": "aira is designed to encourage explainable AI by logging images, metadata, and control signals — enabling users to analyze and justify their models' decisions."
+      },
+      {
+        "title": "Data-Ready for Training",
+        "description": "Log images and metadata in a simple, transparent format, making it easy to train, debug, and iterate on AI models."
+      }
+    ]
+  },
+  "roadmap": {
+    "title": "Roadmap",
+    "items": [
+      {
+        "title": "Global Leaderboards",
+        "description": "Compare algorithm efficiency and decision quality worldwide."
+      },
+      {
+        "title": "Explainability Framework",
+        "description": "A structured framework that encourages users to analyze and explain their models’ decision processes."
+      },
+      {
+        "title": "Dynamic Racing Environments",
+        "description": "Races with interacting vehicles that demand anticipation, situational awareness, and collision avoidance."
+      },
+      {
+        "title": "Official Community Challenges",
+        "description": "Periodic challenges designed for students, educators, and researchers."
+      }
+    ]
+  },
+  "faq": {
+    "title": "FAQ",
+    "items": [
+      {
+        "question": "What OS is supported?",
+        "answer": "Currently, aira is supported on Windows 10/11. Mac and Linux support are planned for the future as the platform evolves."
+      },
+      {
+        "question": "Do I need advanced Python skills?",
+        "answer": "No. You can start with very basic Python knowledge. aira encourages an exploratory style of development, where users iterate on ideas using AI coding assistants and focus on decision-making rather than syntax."
+      },
+            {
+        "question": "Is this for beginners?",
+        "answer": "Yes. You can start with manual control and gradually transition to AI-based driving using examples and tutorials."
+      },
+      {
+        "question": "Do I need a GPU to get started?",
+        "answer": "No. A GPU is not required. aira can be used with manual or simple control logic on a standard CPU-only environment. GPUs are optional and mainly useful for training more advanced AI models."
+      },
+      {
+        "question": "Can I use my own models (.pth)?",
+        "answer": "Yes. PyTorch and other ML models can be loaded through your Python controller script."
+      },
+      {
+        "question": "Can this be used for classes or research?",
+        "answer": "Yes. aira is designed for both individual learning and institutional education (B2Edu)."
+      }
+    ]
+  },
+  "footer": {
+    "copyright": "© 2026 aira-race.com",
+    "links": [
+      { "text": "GitHub", "href": "https://github.com/AAgrandprix" },
+      { "text": "YouTube", "href": "https://www.youtube.com/@AAgrandprix" },
+      { "text": "X", "href": "#" }
+    ]
+  }
+}

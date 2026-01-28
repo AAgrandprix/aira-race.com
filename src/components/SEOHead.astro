@@ -1,0 +1,55 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  canonicalUrl?: string;
+  ogImage?: string;
+  siteName?: string;
+  ogTitle?: string;
+  ogDescription?: string;
+  twitterHandle?: string;
+  lang?: string;
+}
+
+const {
+  title,
+  description,
+  canonicalUrl,
+  ogImage = '/og-image.png',
+  siteName = 'aira',
+  ogTitle,
+  ogDescription,
+  twitterHandle,
+  lang = 'en',
+} = Astro.props;
+
+const currentUrl = canonicalUrl || Astro.url.href;
+const siteOrigin = Astro.site?.origin || 'https://aira-race.com';
+const imageUrl = ogImage.startsWith('http') ? ogImage : `${siteOrigin}${ogImage}`;
+const resolvedOgTitle = ogTitle || title;
+const resolvedOgDescription = ogDescription || description;
+---
+
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>{title}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={currentUrl} />
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<meta name="generator" content={Astro.generator} />
+
+<!-- OGP -->
+<meta property="og:type" content="website" />
+<meta property="og:url" content={currentUrl} />
+<meta property="og:title" content={resolvedOgTitle} />
+<meta property="og:description" content={resolvedOgDescription} />
+<meta property="og:image" content={imageUrl} />
+<meta property="og:site_name" content={siteName} />
+<meta property="og:locale" content={lang === 'ja' ? 'ja_JP' : 'en_US'} />
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image" />
+{twitterHandle && <meta name="twitter:site" content={twitterHandle} />}
+<meta name="twitter:title" content={resolvedOgTitle} />
+<meta name="twitter:description" content={resolvedOgDescription} />
+<meta name="twitter:image" content={imageUrl} />

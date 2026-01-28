@@ -1,0 +1,31 @@
+---
+interface FooterLink {
+  text: string;
+  href: string;
+}
+
+interface Props {
+  copyright: string;
+  links: FooterLink[];
+}
+
+const { copyright, links } = Astro.props;
+---
+
+<footer class="py-8 border-t border-slate-800/50">
+  <div class="max-w-5xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+    <p class="text-sm text-slate-500">{copyright}</p>
+    <nav class="flex items-center gap-6">
+      {links.map((link) => (
+        <a
+          href={link.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-sm text-slate-500 hover:text-slate-300 transition-colors"
+        >
+          {link.text}
+        </a>
+      ))}
+    </nav>
+  </div>
+</footer>

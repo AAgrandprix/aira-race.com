@@ -1,0 +1,37 @@
+---
+interface Props {
+  tagline: string;
+  subtitle: string;
+  primaryCTA: { text: string; href: string };
+  secondaryCTA: { text: string; href: string };
+}
+
+const { tagline, subtitle, primaryCTA, secondaryCTA } = Astro.props;
+---
+
+<section class="min-h-screen flex items-center justify-center px-4 sm:px-6 pt-14">
+  <div class="max-w-3xl mx-auto text-center">
+    <h1 class="text-5xl sm:text-6xl md:text-7xl font-bold tracking-tight text-white">
+      {tagline}
+    </h1>
+    <p class="mt-6 text-lg sm:text-xl text-slate-400 max-w-2xl mx-auto leading-relaxed whitespace-pre-line">
+      {subtitle}
+    </p>
+    <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+      <a
+        href={primaryCTA.href}
+        class="w-full sm:w-auto inline-flex items-center justify-center px-8 py-3.5 text-base font-semibold text-white bg-blue-600 rounded-lg hover:bg-blue-500 transition-colors"
+      >
+        {primaryCTA.text}
+      </a>
+      <a
+        href={secondaryCTA.href}
+        class="w-full sm:w-auto inline-flex items-center justify-center px-8 py-3.5 text-base font-semibold text-slate-300 border border-slate-700 rounded-lg hover:border-blue-500 hover:text-white transition-colors"
+        target={secondaryCTA.href.startsWith('http') ? '_blank' : undefined}
+        rel={secondaryCTA.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+      >
+        {secondaryCTA.text}
+      </a>
+    </div>
+  </div>
+</section>

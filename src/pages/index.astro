@@ -1,0 +1,39 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Hero from '../components/Hero.astro';
+import Mission from '../components/Mission.astro';
+import Workflow from '../components/Workflow.astro';
+import TechSpecs from '../components/TechSpecs.astro';
+import Roadmap from '../components/Roadmap.astro';
+import FAQ from '../components/FAQ.astro';
+import Footer from '../components/Footer.astro';
+
+import landing from '../data/landing.json';
+---
+
+<Layout
+  title={landing.site.title}
+  description={landing.site.description}
+  canonicalUrl={landing.site.url}
+  ogImage={landing.site.ogImage}
+  siteName={landing.site.name}
+  ogTitle={landing.site.ogTitle}
+  ogDescription={landing.site.ogDescription}
+  lang={landing.site.lang}
+>
+  <Header
+    siteName={landing.site.name}
+    ctaText={landing.header.ctaText}
+    ctaHref={landing.header.ctaHref}
+  />
+  <main>
+    <Hero {...landing.hero} />
+    <Mission {...landing.mission} />
+    <Workflow {...landing.workflow} />
+    <TechSpecs {...landing.techSpecs} />
+    <Roadmap {...landing.roadmap} />
+    <FAQ {...landing.faq} />
+  </main>
+  <Footer {...landing.footer} />
+</Layout>
