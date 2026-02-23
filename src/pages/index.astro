@@ -2,6 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
 import Hero from '../components/Hero.astro';
+import Leaderboard from '../components/Leaderboard.astro';
 import Mission from '../components/Mission.astro';
 import Workflow from '../components/Workflow.astro';
 import TechSpecs from '../components/TechSpecs.astro';
@@ -29,6 +30,7 @@ import landing from '../data/landing.json';
   />
   <main>
     <Hero {...landing.hero} />
+    <Leaderboard {...landing.leaderboard} />
     <Mission {...landing.mission} />
     <Workflow {...landing.workflow} />
     <TechSpecs {...landing.techSpecs} />

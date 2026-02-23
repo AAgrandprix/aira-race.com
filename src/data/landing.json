@@ -19,6 +19,10 @@
     "primaryCTA": { "text": "Download aira Beta", "href": "https://github.com/AAgrandprix/virtual-robot-race/tree/main" },
     "secondaryCTA": { "text": "YouTube", "href": "https://www.youtube.com/@RaceYourAlgo" }
   },
+  "leaderboard": {
+    "title": "Global Leaderboard",
+    "description": "See who is at the top of the ranks. The leaderboard is updated from the official race records."
+  },
   "mission": {
     "headline": "Intelligence over Velocity",
     "paragraphs": [
