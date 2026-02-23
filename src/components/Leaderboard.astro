@@ -3,62 +3,24 @@ interface Props {
   title: string;
   description: string;
 }
-
 const { title, description } = Astro.props;
 
-const sheetURL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vROK_C64IVXo0U73qZVUo-iPFqTCr4RyX2kh-wU8dGTjOQMnPDSQJEutpGP1LsYibrk9rcNpQ5gXJiR/pub?gid=0&single=true&output=csv';
-
-let leaderboardData = [];
-try {
-  const response = await fetch(sheetURL);
-  if (response.ok) {
-    const csvText = await response.text();
-    // Basic CSV parsing, trims whitespace from cells
-    leaderboardData = csvText
-      .split('
-')
-      .map(row => row.split(',').map(cell => cell.trim().replace(/^"|"$/g, ''))); // Also removes quotes from start/end of cells
-  }
-} catch (error) {
-  console.error('Failed to fetch leaderboard data:', error);
-}
-
-const headers = leaderboardData.length > 0 ? leaderboardData[0] : [];
-const dataRows = leaderboardData.length > 1 ? leaderboardData.slice(1).filter(row => row.length === headers.length && row.some(cell => cell)) : []; // Ensure row has same number of columns and is not empty
+// The pubhtml URL for the Google Sheet
+const sheetURL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vROK_C64IVXo0U73qZVUo-iPFqTCr4RyX2kh-wU8dGTjOQMnPDSQJEutpGP1LsYibrk9rcNpQ5gXJiR/pubhtml?gid=0&single=true';
 ---
 
 <section class="px-6 py-24 sm:py-32">
-  <div class="mx-auto max-w-5xl">
-    <div class="text-center">
-      <h2 class="text-4xl font-bold tracking-tighter sm:text-5xl">{title}</h2>
-      <p class="mt-4 text-slate-300 max-w-2xl mx-auto">{description}</p>
+  <div class="mx-auto max-w-5xl text-center">
+    <h2 class="text-4xl font-bold tracking-tighter sm:text-5xl">{title}</h2>
+    <p class="mt-4 text-slate-300 max-w-2xl mx-auto">{description}</p>
+    <div class="mt-12 max-w-xl mx-auto">
+      <iframe
+        src={`${sheetURL}&amp;widget=true&amp;headers=false`}
+        class="w-full h-[700px] border border-slate-500/20 rounded-2xl bg-transparent"
+        frameborder="0"
+      >
+        Loading Leaderboard…
+      </iframe>
     </div>
-    <div class="mt-12 overflow-x-auto">
-      <div class="inline-block min-w-full align-middle">
-        <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 rounded-2xl border border-slate-500/20">
-          <table class="min-w-full divide-y divide-slate-500/20">
-            <thead class="bg-white/10">
-              <tr>
-                {headers.map(header => (
-                  <th scope="col" class="px-4 py-3.5 text-left text-sm font-semibold text-white">{header}</th>
-                ))}
-              </tr>
-            </thead>
-            <tbody class="divide-y divide-slate-500/20 bg-white/5">
-              {dataRows.map(row => (
-                <tr class="hover:bg-white/10">
-                  {row.map((cell, index) => (
-                    <td class={`whitespace-nowrap px-4 py-4 text-sm ${index === 0 ? 'font-medium text-white' : 'text-slate-300'}`}>{cell}</td>
-                  ))}
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-    {leaderboardData.length === 0 && (
-      <p class="text-center mt-8 text-slate-400">Leaderboard data is currently unavailable. Please check back later.</p>
-    )}
   </div>
 </section>
