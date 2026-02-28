@@ -21,7 +21,7 @@
     "steps": [
       {
         "title": "1. Fork & Setup",
-        "description": "Don't just clone the repo—fork it on GitHub. Forking creates your own version, allowing you to save your progress and contribute back to the community."
+        "description": "Don't just clone the repo—fork it on GitHub. Forking creates your own version, allowing you to save your progress and contribute back to the community. To fork: open the repository in your browser, click the [Fork] button in the top-right corner, then clone your forked URL (https://github.com/YOUR_NAME/virtual-robot-race.git) into Cursor or your editor of choice."
       },
       {
         "title": "2. Run the Sample",
