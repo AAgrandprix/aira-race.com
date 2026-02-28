@@ -14,9 +14,10 @@ interface Props {
   description: string;
   steps: Step[];
   cta: Cta;
+  ctaSubtitle?: string;
 }
 
-const { title, description, steps, cta } = Astro.props;
+const { title, description, steps, cta, ctaSubtitle } = Astro.props;
 ---
 
 <section id="getting-started" class="py-20 sm:py-32">
@@ -49,6 +50,9 @@ const { title, description, steps, cta } = Astro.props;
       >
         {cta.text}
       </a>
+      {ctaSubtitle && (
+        <p class="mt-4 text-sm text-slate-400">{ctaSubtitle}</p>
+      )}
     </div>
   </div>
 </section>

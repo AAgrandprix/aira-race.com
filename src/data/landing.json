@@ -20,8 +20,8 @@
     "description": "Follow our simple tutorial to set up your environment and complete your first race. No prior experience needed!",
     "steps": [
       {
-        "title": "1. Download & Setup",
-        "description": "Clone the repo from GitHub and run the setup script. You'll be ready in minutes."
+        "title": "1. Fork & Setup",
+        "description": "Don't just clone the repo—fork it on GitHub. Forking creates your own version, allowing you to save your progress and contribute back to the community."
       },
       {
         "title": "2. Run the Sample",
@@ -32,7 +32,8 @@
         "description": "Modify the code, improve the strategy, and submit your result to the leaderboard."
       }
     ],
-    "cta": { "text": "Fork the Tutorial on GitHub", "href": "https://github.com/aira-race/virtual-robot-race" }
+    "cta": { "text": "Fork the Tutorial on GitHub", "href": "https://github.com/aira-race/virtual-robot-race" },
+    "ctaSubtitle": "By forking, you're not just starting a tutorial; you're joining a community. Your growth helps aira grow."
   },
   "competitions": {
     "title": "Competitions",
