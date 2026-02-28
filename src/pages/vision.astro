@@ -1,0 +1,32 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import landing from '../data/landing.json';
+
+const pageTitle = "Vision | aira";
+const pageDescription = "The vision behind the aira project.";
+---
+
+<Layout
+  title={pageTitle}
+  description={pageDescription}
+  canonicalUrl={landing.site.url + '/vision'}
+  ogImage={landing.site.ogImage}
+  siteName={landing.site.name}
+  ogTitle={pageTitle}
+  ogDescription={pageDescription}
+  lang={landing.site.lang}
+>
+  <Header />
+  <main class="max-w-3xl mx-auto px-4 sm:px-6 py-24">
+    <h1 class="text-4xl font-bold tracking-tight text-white sm:text-5xl">Our Vision</h1>
+    <p class="mt-6 text-lg leading-8 text-slate-400">
+      This page will detail the vision and long-term goals of the aira project.
+    </p>
+    <p class="mt-4 text-slate-400">
+      Content to be added here based on the project's pitch deck and future plans.
+    </p>
+  </main>
+  <Footer {...landing.footer} />
+</Layout>

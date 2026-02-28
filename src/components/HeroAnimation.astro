@@ -1,0 +1,67 @@
+<div id="canvas-container" class="h-64"></div>
+
+<script is:inline src="https://cdn.jsdelivr.net/npm/p5@1.9.0/lib/p5.js"></script>
+<script is:inline>
+  let particles = [];
+  const numParticles = 100;
+
+  function setup(p) {
+    let container = document.getElementById('canvas-container');
+    let canvas = p.createCanvas(container.offsetWidth, container.offsetHeight);
+    canvas.parent('canvas-container');
+    for (let i = 0; i < numParticles; i++) {
+      particles.push(new Particle(p, p.random(p.width), p.random(p.height)));
+    }
+    window.addEventListener('resize', () => {
+      p.resizeCanvas(container.offsetWidth, container.offsetHeight);
+    });
+  }
+
+  function draw(p) {
+    p.background(10, 10, 20); // Dark blue background
+    for (let i = 0; i < particles.length; i++) {
+      particles[i].update(p);
+      particles[i].display(p);
+      for (let j = i + 1; j < particles.length; j++) {
+        let distance = p.dist(particles[i].x, particles[i].y, particles[j].x, particles[j].y);
+        if (distance < 100) {
+          p.stroke(255, 255, 255, p.map(distance, 0, 100, 200, 0));
+          p.line(particles[i].x, particles[i].y, particles[j].x, particles[j].y);
+        }
+      }
+    }
+  }
+
+  class Particle {
+    constructor(p, x, y) {
+      this.p = p;
+      this.x = x;
+      this.y = y;
+      this.vx = p.random(-1, 1);
+      this.vy = p.random(-1, 1);
+    }
+
+    update() {
+      this.x += this.vx;
+      this.y += this.vy;
+
+      if (this.x < 0 || this.x > this.p.width) {
+        this.vx *= -1;
+      }
+      if (this.y < 0 || this.y > this.p.height) {
+        this.vy *= -1;
+      }
+    }
+
+    display() {
+      this.p.noStroke();
+      this.p.fill(255);
+      this.p.ellipse(this.x, this.y, 3, 3);
+    }
+  }
+
+  new p5(p => {
+    p.setup = () => setup(p);
+    p.draw = () => draw(p);
+  });
+</script>

@@ -1,0 +1,32 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import landing from '../data/landing.json';
+
+const pageTitle = "Login | aira";
+const pageDescription = "Login to your aira account.";
+---
+
+<Layout
+  title={pageTitle}
+  description={pageDescription}
+  canonicalUrl={landing.site.url + '/login'}
+  ogImage={landing.site.ogImage}
+  siteName={landing.site.name}
+  ogTitle={pageTitle}
+  ogDescription={pageDescription}
+  lang={landing.site.lang}
+>
+  <Header />
+  <main class="max-w-3xl mx-auto px-4 sm:px-6 py-24 text-center">
+    <h1 class="text-4xl font-bold tracking-tight text-white sm:text-5xl">Login</h1>
+    <p class="mt-6 text-lg leading-8 text-slate-400">
+      The full Google Login functionality is currently under development and will be available in Phase 2.
+    </p>
+    <p class="mt-4 text-slate-400">
+      Thank you for your patience!
+    </p>
+  </main>
+  <Footer {...landing.footer} />
+</Layout>

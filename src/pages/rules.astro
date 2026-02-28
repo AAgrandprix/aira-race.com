@@ -1,0 +1,37 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import landing from '../data/landing.json';
+
+const pageTitle = "Rules & Ranking | aira";
+const pageDescription = "Competition rules and ranking calculation for aira.";
+---
+
+<Layout
+  title={pageTitle}
+  description={pageDescription}
+  canonicalUrl={landing.site.url + '/rules'}
+  ogImage={landing.site.ogImage}
+  siteName={landing.site.name}
+  ogTitle={pageTitle}
+  ogDescription={pageDescription}
+  lang={landing.site.lang}
+>
+  <Header />
+  <main class="max-w-3xl mx-auto px-4 sm:px-6 py-24">
+    <h1 class="text-4xl font-bold tracking-tight text-white sm:text-5xl">Rules & Ranking</h1>
+    <p class="mt-6 text-lg leading-8 text-slate-400">
+      This page will detail the official competition rules and the formula used to calculate player rankings.
+    </p>
+    <h2 class="text-2xl font-bold mt-8 text-white">Competition Rules</h2>
+    <p class="mt-4 text-slate-400">
+      Content to be added.
+    </p>
+    <h2 class="text-2xl font-bold mt-8 text-white">Ranking Formula</h2>
+    <p class="mt-4 text-slate-400">
+      The ranking formula will be published here to ensure transparency.
+    </p>
+  </main>
+  <Footer {...landing.footer} />
+</Layout>

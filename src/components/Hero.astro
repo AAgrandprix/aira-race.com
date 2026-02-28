@@ -1,4 +1,6 @@
 ---
+import HeroAnimation from './HeroAnimation.astro';
+
 interface Props {
   tagline: string;
   subtitle: string;
@@ -17,6 +19,9 @@ const { tagline, subtitle, primaryCTA, secondaryCTA } = Astro.props;
     <p class="mt-6 text-lg sm:text-xl text-slate-400 max-w-2xl mx-auto leading-relaxed whitespace-pre-line">
       {subtitle}
     </p>
+    <div class="mt-10">
+      <HeroAnimation />
+    </div>
     <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
       <a
         href={primaryCTA.href}

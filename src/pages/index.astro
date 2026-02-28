@@ -3,11 +3,8 @@ import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
 import Hero from '../components/Hero.astro';
 import Leaderboard from '../components/Leaderboard.astro';
-import Mission from '../components/Mission.astro';
-import Workflow from '../components/Workflow.astro';
-import TechSpecs from '../components/TechSpecs.astro';
-import Roadmap from '../components/Roadmap.astro';
-import FAQ from '../components/FAQ.astro';
+import GettingStarted from '../components/GettingStarted.astro';
+import Competitions from '../components/Competitions.astro';
 import Footer from '../components/Footer.astro';
 
 import landing from '../data/landing.json';
@@ -23,19 +20,12 @@ import landing from '../data/landing.json';
   ogDescription={landing.site.ogDescription}
   lang={landing.site.lang}
 >
-  <Header
-    siteName={landing.site.name}
-    ctaText={landing.header.ctaText}
-    ctaHref={landing.header.ctaHref}
-  />
+  <Header />
   <main>
     <Hero {...landing.hero} />
-    <Leaderboard {...landing.leaderboard} />
-    <Mission {...landing.mission} />
-    <Workflow {...landing.workflow} />
-    <TechSpecs {...landing.techSpecs} />
-    <Roadmap {...landing.roadmap} />
-    <FAQ {...landing.faq} />
+    <GettingStarted {...landing.gettingStarted} />
+    <Competitions {...landing.competitions} />
+    <Leaderboard {...landing.ranking} />
   </main>
   <Footer {...landing.footer} />
 </Layout>
