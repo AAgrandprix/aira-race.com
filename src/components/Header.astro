@@ -1,6 +1,12 @@
 ---
 import landing from '../data/landing.json';
 
+export interface Props {
+  isLoggedIn?: boolean;
+}
+
+const { isLoggedIn = false } = Astro.props;
+
 const navLinks = [
   { text: 'Competitions', href: '/#competitions' },
   { text: 'Ranking', href: '/#ranking' },
@@ -8,6 +14,7 @@ const navLinks = [
 ];
 
 const loginUrl = '/login';
+const dashboardUrl = '/dashboard';
 ---
 
 <header class="fixed top-0 left-0 right-0 z-50 bg-slate-950/80 backdrop-blur-lg border-b border-slate-800/50">
@@ -33,14 +40,23 @@ const loginUrl = '/login';
         </ul>
       </nav>
 
-      {/* Login button */}
+      {/* Login/Dashboard button */}
       <div class="flex-none">
-        <a
-          href={loginUrl}
-          class="inline-flex items-center px-4 py-2 text-sm font-semibold text-white bg-blue-600 rounded-lg hover:bg-blue-500 transition-colors"
-        >
-          Login
-        </a>
+        {isLoggedIn ? (
+          <a
+            href={dashboardUrl}
+            class="inline-flex items-center px-4 py-2 text-sm font-semibold text-white bg-green-600 rounded-lg hover:bg-green-500 transition-colors"
+          >
+            Dashboard
+          </a>
+        ) : (
+          <a
+            href={loginUrl}
+            class="inline-flex items-center px-4 py-2 text-sm font-semibold text-white bg-blue-600 rounded-lg hover:bg-blue-500 transition-colors"
+          >
+            Login
+          </a>
+        )}
       </div>
 
       {/* TODO: Add mobile menu */}

@@ -1,0 +1,113 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import landing from '../data/landing.json';
+
+const pageTitle = "Participant Agreement | aira";
+const pageDescription = "aira Competition Participant Agreement";
+
+const agreementContent = `
+<div class="p-4 bg-slate-800 rounded-lg border border-slate-700 text-sm text-slate-400">
+<p><strong>Version:</strong> 2.0</p>
+<p><strong>Last Updated:</strong> 2026-03-01</p>
+<p><strong>Platform:</strong> aira (aira-race.com)</p>
+<p class="mt-4 italic"><strong>Language Notice:</strong> This Agreement is provided in English (authoritative) and Japanese (reference translation). In the event of any conflict between the two versions, the <strong>English version shall prevail</strong>.</p>
+</div>
+
+<div class="mt-8 text-red-400 border border-red-400/50 rounded-lg p-6">
+<h2 class="text-xl font-bold text-red-300">IMPORTANT – PLEASE READ CAREFULLY</h2>
+<p class="mt-4">By logging into the aira Platform and clicking <strong>"I Agree"</strong>, you acknowledge that you have read, understood, and agree to be bound by this Participant Agreement in its entirety. If you do not agree, you may not participate in any Competition on the Platform.</p>
+<p class="mt-4"><strong>Minors:</strong> If you are under the age of 18, you must obtain the consent of a parent or legal guardian before participating. By accepting this Agreement, you represent that you have obtained such consent where required by the laws of your jurisdiction.</p>
+</div>
+
+<div class="mt-12">
+<h1 class="text-3xl font-bold text-white mb-6">ENGLISH VERSION (Authoritative)</h1>
+
+<div class="space-y-8">
+  <div class="space-y-4">
+    <h2 class="text-2xl font-semibold text-sky-300">Article 1 – Definitions</h2>
+    <p><strong>1.1 "Platform"</strong> means the aira competition website located at aira-race.com and all related services.</p>
+    <p><strong>1.2 "Competition"</strong> means any algorithm development, robot control, data analysis, or system development contest hosted on the Platform.</p>
+    <p><strong>1.3 "Submission"</strong> means any algorithm, source code, model, prediction result, technical documentation, report, ZIP archive, Git repository link, or any other material submitted by a Participant in connection with a Competition, including all Final Submissions.</p>
+    <p><strong>1.4 "Final Submission"</strong> means the Submission designated by a Participant as their final entry at the close of a Competition.</p>
+    <p><strong>1.5 "Intellectual Property Rights"</strong> means all copyrights (including rights under Articles 27 and 28 of the Japanese Copyright Act), patent rights, rights to obtain patents, know-how, trade secrets, and all other transferable intellectual property rights.</p>
+    <p><strong>1.6 "Prize"</strong> means any monetary award or other benefit offered to Participants in a Competition.</p>
+    <p><strong>1.7 "aira"</strong> means <strong>AA.RACE</strong> (a sole proprietorship registered in Japan) operating the aira platform and any successor entity.</p>
+  </div>
+
+  <div class="space-y-4">
+    <h2 class="text-2xl font-semibold text-sky-300">Article 2 – Participation</h2>
+    <p><strong>2.1</strong> To participate in a Competition, you must complete registration on the Platform and accept this Agreement.</p>
+    <p><strong>2.2</strong> By submitting any Submission, you agree to be bound by all Competition rules published on the Platform for the relevant Competition.</p>
+    <p><strong>2.3</strong> Participation in a Competition does not guarantee any Prize.</p>
+    <p><strong>2.4</strong> This Agreement applies to all Submissions, regardless of whether you win a Prize.</p>
+  </div>
+
+  <div class="space-y-4">
+    <h2 class="text-2xl font-semibold text-sky-300">Article 3 – Grant of Rights</h2>
+    <p><strong>3.1 License Grant.</strong> By submitting any Submission, you hereby grant aira a <strong>worldwide, perpetual, irrevocable, royalty-free, sublicensable, and transferable license</strong> to use, reproduce, modify, adapt, publish, translate, distribute, sublicense, perform, display, and create derivative works from your Submission, in whole or in part, for any commercial or non-commercial purpose, without further consent, notice, or compensation to you beyond the Prize (if any) awarded under Article 4.</p>
+    <p><strong>3.2 Sublicensing Rights.</strong> The license granted under Section 3.1 expressly includes the right for aira to <strong>sublicense, assign, or otherwise transfer</strong> the licensed rights to third parties, including but not limited to corporate sponsors, partner companies, clients, or acquirers of aira's business, without restriction as to geography, industry, or time period.</p>
+    <p><strong>3.3 Moral Rights Non-Assertion.</strong> To the fullest extent permitted by applicable law, you irrevocably <strong>agree not to assert</strong> any moral rights or equivalent rights in or to your Submissions against aira, its sublicensees, assignees, or any authorized third parties. Nothing in this Section shall be construed as a waiver of moral rights to the extent such waiver is not permitted under applicable law, including the Japanese Copyright Act.</p>
+    <p><strong>3.4 Retained Academic and Research Use.</strong> Notwithstanding Section 3.1, you retain the right to use your own Submission for <strong>non-commercial academic research, education, and personal portfolio purposes</strong>, provided that such use does not conflict with any confidentiality obligations set forth in Article 7.</p>
+    <p><strong>3.5 Scope.</strong> The rights granted in this Article 3 apply to <strong>all Submissions</strong>, including those that do not win a Prize. You acknowledge and agree that this includes Submissions that are not selected as winning entries.</p>
+  </div>
+
+  <div class="space-y-4">
+    <h2 class="text-2xl font-semibold text-sky-300">Article 4 – Prizes and Payment</h2>
+    <p><strong>4.1</strong> Prizes will be awarded to eligible Participants as specified in the rules of each Competition.</p>
+    <p><strong>4.2</strong> Receipt of any Prize is conditioned upon all of the following:</p>
+    <ul class="list-disc list-inside pl-4 space-y-2">
+      <li>(a) Your Submission achieving a ranking as specified in the Competition rules;</li>
+      <li>(b) Your written confirmation of the rights grant under Article 3 upon request by aira;</li>
+      <li>(c) Successful identity verification as reasonably requested by aira, conducted in accordance with aira's Privacy Policy;</li>
+      <li>(d) Your full compliance with this Agreement and all applicable Competition rules.</li>
+    </ul>
+    <p><strong>4.3</strong> aira reserves the right to withhold or reclaim a Prize if a Participant is found to have violated this Agreement.</p>
+    <p><strong>4.4 Tax Responsibility.</strong> You are solely responsible for all applicable taxes, duties, and withholding obligations on any Prize received. aira makes no representations regarding the tax treatment of Prizes in your jurisdiction. We recommend consulting a local tax professional.</p>
+    <p><strong>4.5</strong> Payment methods and timing will be specified in the rules of each Competition.</p>
+  </div>
+  
+  <div class="space-y-4">
+    <h2 class="text-2xl font-semibold text-sky-300">Article 11 – Governing Law and Dispute Resolution</h2>
+    <p><strong>11.1 Governing Law.</strong> This Agreement shall be governed by and construed in accordance with the laws of <strong>Japan</strong>, without regard to its conflict of law provisions.</p>
+    <p><strong>11.2 Good-Faith Negotiation.</strong> Any dispute arising out of or in connection with this Agreement shall first be attempted to be resolved through good-faith written negotiation between the parties for a period of <strong>thirty (30) days</strong> from the date one party notifies the other of the dispute.</p>
+    <p><strong>11.3 Arbitration.</strong> If the dispute cannot be resolved through negotiation within the period specified in Section 11.2, it shall be <strong>finally and exclusively resolved by arbitration</strong> administered by the Japan Commercial Arbitration Association (JCAA) in <strong>Tokyo, Japan</strong>, in accordance with its Commercial Arbitration Rules. The language of arbitration shall be <strong>English</strong>. The arbitral award shall be final and binding.</p>
+  </div>
+
+  <div class="space-y-4">
+    <h2 class="text-2xl font-semibold text-sky-300">Article 13 – General Provisions</h2>
+    <p><strong>13.5 Contact and Operator Information.</strong><br>
+    For questions regarding this Agreement, please contact:<br>
+    - <strong>Business Name:</strong> AA.RACE<br>
+    - <strong>Platform:</strong> aira (aira-race.com)<br>
+    - <strong>Email:</strong> contact@aira-race.com<br>
+    - <strong>Address:</strong> [Address to be added]<br>
+    - <strong>Phone:</strong> [Phone number to be added]<br>
+    - <strong>Representative:</strong> Satoru Ohmori <em>(disclosed as required under the Act on Specified Commercial Transactions)</em>
+    </p>
+  </div>
+
+</div>
+</div>
+`;
+---
+
+<Layout
+  title={pageTitle}
+  description={pageDescription}
+  canonicalUrl={landing.site.url + '/agreement'}
+  ogImage={landing.site.ogImage}
+  siteName={landing.site.name}
+  ogTitle={pageTitle}
+  ogDescription={pageDescription}
+  lang={landing.site.lang}
+>
+  <Header />
+  <main class="flex-grow">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 py-24">
+      <article class="text-slate-300" set:html={agreementContent} />
+    </div>
+  </main>
+  <Footer {...landing.footer} />
+</Layout>

@@ -1,0 +1,107 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import landing from '../data/landing.json';
+
+const pageTitle = "Dashboard | aira";
+const pageDescription = "Your personal dashboard on aira.";
+
+// Placeholder user data
+const user = {
+  name: "Racer",
+};
+
+const nextSteps = [
+  { text: "Complete your first AI race (Getting Started)", href: "/", completed: false },
+  { text: "Explore current competitions", href: "/#competitions", completed: false },
+  { text: "Update your public profile", href: "#", completed: true, disabled: true },
+];
+---
+
+<Layout
+  title={pageTitle}
+  description={pageDescription}
+  canonicalUrl={landing.site.url + '/dashboard'}
+  ogImage={landing.site.ogImage}
+  siteName={landing.site.name}
+  ogTitle={pageTitle}
+  ogDescription={pageDescription}
+  lang={landing.site.lang}
+>
+  <Header isLoggedIn={true} />
+  <main class="flex-grow bg-slate-950">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-16">
+      
+      {/* Welcome Header */}
+      <div class="mb-12">
+        <h1 class="text-4xl font-bold tracking-tight text-white sm:text-5xl">
+          Welcome, <span class="text-sky-400">{user.name}</span>!
+        </h1>
+        <p class="mt-4 text-lg text-slate-400">
+          Ready to climb the leaderboard? Here's what you can do next.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        
+        {/* Main Content: Next Steps */}
+        <div class="md:col-span-2">
+          <div class="bg-slate-900 border border-slate-700 rounded-lg shadow">
+            <div class="p-6">
+              <h2 class="text-2xl font-semibold text-white">Next Steps</h2>
+              <p class="mt-1 text-slate-400">As suggested by Kaggle's "Next Step" checklist.</p>
+            </div>
+            <ul class="divide-y divide-slate-700">
+              {nextSteps.map(step => (
+                <li class=`p-6 flex items-center justify-between ${step.disabled ? 'opacity-50' : 'hover:bg-slate-800/50'}`>
+                  <div class="flex items-center">
+                    <div class:list={['h-8 w-8 rounded-full flex items-center justify-center', step.completed ? 'bg-green-500' : 'bg-slate-700']}>
+                      {step.completed ? (
+                        <svg class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+                      ) : (
+                        <svg class="h-5 w-5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
+                      )}
+                    </div>
+                    <span class="ml-4 text-lg text-slate-300">{step.text}</span>
+                  </div>
+                  {!step.disabled && (
+                    <a href={step.href} class="text-sky-400 hover:text-sky-300 font-semibold">
+                      Go &rarr;
+                    </a>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        {/* Sidebar: Future Features */}
+        <div class="space-y-8">
+          
+          {/* Badges Placeholder */}
+          <div class="bg-slate-900 border border-slate-700 rounded-lg shadow">
+            <div class="p-6">
+              <h3 class="text-xl font-semibold text-white">Your Badges</h3>
+              <div class="mt-4 h-24 flex items-center justify-center border-2 border-dashed border-slate-600 rounded-lg">
+                <p class="text-slate-500">Coming soon!</p>
+              </div>
+            </div>
+          </div>
+          
+          {/* Recent Activity Placeholder */}
+          <div class="bg-slate-900 border border-slate-700 rounded-lg shadow">
+            <div class="p-6">
+              <h3 class="text-xl font-semibold text-white">Recent Activity</h3>
+              <div class="mt-4 h-48 flex items-center justify-center border-2 border-dashed border-slate-600 rounded-lg">
+                <p class="text-slate-500">Coming soon!</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </main>
+  <Footer {...landing.footer} />
+</Layout>
