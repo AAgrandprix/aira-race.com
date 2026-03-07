@@ -166,14 +166,78 @@ export default function LoginManager() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-slate-300 mb-1">Country (Optional)</label>
-                <input
-                  type="text"
+                <label className="block text-sm font-medium text-slate-300 mb-1">Country</label>
+                <select
                   value={formData.country}
                   onChange={(e) => setFormData({...formData, country: e.target.value})}
                   className="w-full bg-slate-900 border border-slate-600 rounded-lg px-4 py-2 text-white focus:ring-2 focus:ring-sky-500 focus:border-transparent outline-none"
-                  placeholder="Japan"
-                />
+                >
+                  <option value="">— Select your country —</option>
+                  <option value="Afghanistan">Afghanistan</option>
+                  <option value="Albania">Albania</option>
+                  <option value="Algeria">Algeria</option>
+                  <option value="Argentina">Argentina</option>
+                  <option value="Australia">Australia</option>
+                  <option value="Austria">Austria</option>
+                  <option value="Bangladesh">Bangladesh</option>
+                  <option value="Belgium">Belgium</option>
+                  <option value="Brazil">Brazil</option>
+                  <option value="Canada">Canada</option>
+                  <option value="Chile">Chile</option>
+                  <option value="China">China</option>
+                  <option value="Colombia">Colombia</option>
+                  <option value="Croatia">Croatia</option>
+                  <option value="Czech Republic">Czech Republic</option>
+                  <option value="Denmark">Denmark</option>
+                  <option value="Egypt">Egypt</option>
+                  <option value="Finland">Finland</option>
+                  <option value="France">France</option>
+                  <option value="Germany">Germany</option>
+                  <option value="Ghana">Ghana</option>
+                  <option value="Greece">Greece</option>
+                  <option value="Hungary">Hungary</option>
+                  <option value="India">India</option>
+                  <option value="Indonesia">Indonesia</option>
+                  <option value="Iran">Iran</option>
+                  <option value="Ireland">Ireland</option>
+                  <option value="Israel">Israel</option>
+                  <option value="Italy">Italy</option>
+                  <option value="Japan">Japan</option>
+                  <option value="Jordan">Jordan</option>
+                  <option value="Kenya">Kenya</option>
+                  <option value="Malaysia">Malaysia</option>
+                  <option value="Mexico">Mexico</option>
+                  <option value="Morocco">Morocco</option>
+                  <option value="Netherlands">Netherlands</option>
+                  <option value="New Zealand">New Zealand</option>
+                  <option value="Nigeria">Nigeria</option>
+                  <option value="Norway">Norway</option>
+                  <option value="Pakistan">Pakistan</option>
+                  <option value="Peru">Peru</option>
+                  <option value="Philippines">Philippines</option>
+                  <option value="Poland">Poland</option>
+                  <option value="Portugal">Portugal</option>
+                  <option value="Romania">Romania</option>
+                  <option value="Russia">Russia</option>
+                  <option value="Saudi Arabia">Saudi Arabia</option>
+                  <option value="Singapore">Singapore</option>
+                  <option value="South Africa">South Africa</option>
+                  <option value="South Korea">South Korea</option>
+                  <option value="Spain">Spain</option>
+                  <option value="Sri Lanka">Sri Lanka</option>
+                  <option value="Sweden">Sweden</option>
+                  <option value="Switzerland">Switzerland</option>
+                  <option value="Taiwan">Taiwan</option>
+                  <option value="Thailand">Thailand</option>
+                  <option value="Turkey">Turkey</option>
+                  <option value="Ukraine">Ukraine</option>
+                  <option value="United Arab Emirates">United Arab Emirates</option>
+                  <option value="United Kingdom">United Kingdom</option>
+                  <option value="United States">United States</option>
+                  <option value="Vietnam">Vietnam</option>
+                  <option value="Other">Other</option>
+                </select>
+                <p className="mt-1 text-xs text-amber-400/80">* Required for prize money disbursement.</p>
               </div>
 
               <div className="pt-4">
