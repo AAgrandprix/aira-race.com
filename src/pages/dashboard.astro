@@ -2,21 +2,11 @@
 import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import DashboardHeader from '../components/DashboardHeader.jsx';
 import landing from '../data/landing.json';
 
 const pageTitle = "Dashboard | aira";
 const pageDescription = "Your personal dashboard on aira.";
-
-// Placeholder user data
-const user = {
-  name: "Racer",
-};
-
-const nextSteps = [
-  { text: "Complete your first AI race (Getting Started)", href: "/", completed: false },
-  { text: "Explore current competitions", href: "/#competitions", completed: false },
-  { text: "Update your public profile", href: "#", completed: true, disabled: true },
-];
 ---
 
 <Layout
@@ -31,75 +21,67 @@ const nextSteps = [
 >
   <Header isLoggedIn={true} />
   <main class="flex-grow bg-slate-950">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-16">
-      
-      {/* Welcome Header */}
-      <div class="mb-12">
-        <h1 class="text-4xl font-bold tracking-tight text-white sm:text-5xl">
-          Welcome, <span class="text-sky-400">{user.name}</span>!
-        </h1>
-        <p class="mt-4 text-lg text-slate-400">
-          Ready to climb the leaderboard? Here's what you can do next.
-        </p>
-      </div>
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 py-16">
 
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-        
-        {/* Main Content: Next Steps */}
-        <div class="md:col-span-2">
-          <div class="bg-slate-900 border border-slate-700 rounded-lg shadow">
-            <div class="p-6">
-              <h2 class="text-2xl font-semibold text-white">Next Steps</h2>
-              <p class="mt-1 text-slate-400">As suggested by Kaggle's "Next Step" checklist.</p>
-            </div>
-            <ul class="divide-y divide-slate-700">
-              {nextSteps.map(step => (
-                <li class=`p-6 flex items-center justify-between ${step.disabled ? 'opacity-50' : 'hover:bg-slate-800/50'}`>
-                  <div class="flex items-center">
-                    <div class:list={['h-8 w-8 rounded-full flex items-center justify-center', step.completed ? 'bg-green-500' : 'bg-slate-700']}>
-                      {step.completed ? (
-                        <svg class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
-                      ) : (
-                        <svg class="h-5 w-5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
-                      )}
-                    </div>
-                    <span class="ml-4 text-lg text-slate-300">{step.text}</span>
-                  </div>
-                  {!step.disabled && (
-                    <a href={step.href} class="text-sky-400 hover:text-sky-300 font-semibold">
-                      Go &rarr;
-                    </a>
-                  )}
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
+      <DashboardHeader client:load />
 
-        {/* Sidebar: Future Features */}
-        <div class="space-y-8">
-          
-          {/* Badges Placeholder */}
-          <div class="bg-slate-900 border border-slate-700 rounded-lg shadow">
-            <div class="p-6">
-              <h3 class="text-xl font-semibold text-white">Your Badges</h3>
-              <div class="mt-4 h-24 flex items-center justify-center border-2 border-dashed border-slate-600 rounded-lg">
-                <p class="text-slate-500">Coming soon!</p>
+      <!-- 2 Hero Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+        <!-- Card 1: Getting Started -->
+        <a href="/getting-started" class="group relative overflow-hidden rounded-2xl border border-slate-700 hover:border-sky-500 transition-all duration-300 hover:shadow-lg hover:shadow-sky-500/10 bg-slate-900 block">
+          <div class="absolute inset-0 bg-gradient-to-br from-sky-500/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+          <div class="p-8">
+            <div class="flex items-center justify-between mb-6">
+              <div class="h-12 w-12 rounded-xl bg-sky-500/20 flex items-center justify-center">
+                <svg class="h-6 w-6 text-sky-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
               </div>
+              <svg class="h-5 w-5 text-slate-600 group-hover:text-sky-400 group-hover:translate-x-1 transition-all duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+              </svg>
+            </div>
+            <h2 class="text-2xl font-bold text-white mb-2 group-hover:text-sky-400 transition-colors">Getting Started</h2>
+            <p class="text-slate-400 text-sm leading-relaxed">
+              Set up your environment, download the simulation, and train your first algorithm. Step-by-step guide to your first AI race.
+            </p>
+            <div class="mt-6 flex items-center gap-2 text-sky-400 text-sm font-medium">
+              <span>Start here</span>
+              <svg class="h-4 w-4 group-hover:translate-x-1 transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+              </svg>
             </div>
           </div>
-          
-          {/* Recent Activity Placeholder */}
-          <div class="bg-slate-900 border border-slate-700 rounded-lg shadow">
-            <div class="p-6">
-              <h3 class="text-xl font-semibold text-white">Recent Activity</h3>
-              <div class="mt-4 h-48 flex items-center justify-center border-2 border-dashed border-slate-600 rounded-lg">
-                <p class="text-slate-500">Coming soon!</p>
-              </div>
-            </div>
-          </div>
+        </a>
 
-        </div>
+        <!-- Card 2: Competitions -->
+        <a href="/competitions" class="group relative overflow-hidden rounded-2xl border border-slate-700 hover:border-violet-500 transition-all duration-300 hover:shadow-lg hover:shadow-violet-500/10 bg-slate-900 block">
+          <div class="absolute inset-0 bg-gradient-to-br from-violet-500/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+          <div class="p-8">
+            <div class="flex items-center justify-between mb-6">
+              <div class="h-12 w-12 rounded-xl bg-violet-500/20 flex items-center justify-center">
+                <svg class="h-6 w-6 text-violet-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+                </svg>
+              </div>
+              <svg class="h-5 w-5 text-slate-600 group-hover:text-violet-400 group-hover:translate-x-1 transition-all duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+              </svg>
+            </div>
+            <h2 class="text-2xl font-bold text-white mb-2 group-hover:text-violet-400 transition-colors">Competitions</h2>
+            <p class="text-slate-400 text-sm leading-relaxed">
+              Browse active races, review rules, and submit your algorithm. Compete for prizes and climb the global leaderboard.
+            </p>
+            <div class="mt-6 flex items-center gap-2 text-violet-400 text-sm font-medium">
+              <span>View competitions</span>
+              <svg class="h-4 w-4 group-hover:translate-x-1 transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+              </svg>
+            </div>
+          </div>
+        </a>
+
       </div>
     </div>
   </main>
