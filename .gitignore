@@ -4,4 +4,5 @@ dist/
 .DS_Store
 *.local
 .env
+.claude/
 Disucussion_with_AI/

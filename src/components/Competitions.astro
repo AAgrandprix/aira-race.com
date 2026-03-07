@@ -1,10 +1,42 @@
 ---
+// Define the expected structure of a competition object from the API
+interface Competition {
+  ID: string;
+  Title: string;
+  Status: string;
+  // Add other properties from your Google Sheet header row as needed
+  // e.g., Description: string; StartDate: string;
+}
+
 interface Props {
   title: string;
   description: string;
 }
 
 const { title, description } = Astro.props;
+
+let competitions: Competition[] = [];
+let fetchError = false;
+
+try {
+  // Fetch data from the GAS API using the URL from environment variables
+  const apiUrl = import.meta.env.PUBLIC_GAS_WEB_APP_URL;
+
+  if (!apiUrl) {
+    console.error("API URL is not configured. Please check your .env file.");
+    fetchError = true;
+  } else {
+    const response = await fetch(apiUrl);
+    if (!response.ok) {
+      throw new Error(`API request failed with status ${response.status}`);
+    }
+    // The API returns an array of competition objects
+    competitions = await response.json();
+  }
+} catch (error) {
+  console.error("Failed to fetch competitions:", error);
+  fetchError = true;
+}
 ---
 
 <section id="competitions" class="py-20 sm:py-32 bg-slate-900">
@@ -12,10 +44,31 @@ const { title, description } = Astro.props;
     <div class="text-center">
       <h2 class="text-3xl font-bold tracking-tight text-white sm:text-4xl">{title}</h2>
       <p class="mt-4 text-lg leading-8 text-slate-400">{description}</p>
-      <p class="mt-8 text-slate-500">
-        (Competition listings will appear here)
-      </p>
     </div>
-    <!-- Future competition cards will be mapped here -->
+
+    <div class="mt-12">
+      {fetchError ? (
+        <div class="text-center bg-red-900/50 border border-red-700 text-red-300 px-4 py-3 rounded-lg">
+          <p class="font-bold">Error</p>
+          <p class="text-sm">Failed to load competitions. Please ensure the API URL is correct and the service is running.</p>
+        </div>
+      ) : competitions.length > 0 ? (
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {competitions.map((comp) => (
+            <div class="bg-slate-800 rounded-lg p-6 text-white transform hover:-translate-y-1 transition-transform duration-300">
+              <h3 class="text-xl font-bold text-sky-400">{comp.Title || 'No Title Provided'}</h3>
+              <p class="mt-2 text-slate-300">Status: <span class="font-semibold">{comp.Status || 'N/A'}</span></p>
+              <!-- You can add more competition details here -->
+              <!-- Example: <p class="mt-1 text-sm text-slate-400">ID: {comp.ID}</p> -->
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div class="text-center bg-slate-800/50 border border-slate-700 text-slate-400 px-4 py-8 rounded-lg">
+          <p>There are no active competitions at the moment.</p>
+          <p class="mt-2 text-sm">Please check back later!</p>
+        </div>
+      )}
+    </div>
   </div>
 </section>
