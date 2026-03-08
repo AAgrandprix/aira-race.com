@@ -2,6 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
 import Hero from '../components/Hero.astro';
+import Demo from '../components/Demo.astro';
 import Leaderboard from '../components/Leaderboard.astro';
 import GettingStarted from '../components/GettingStarted.astro';
 import Competitions from '../components/Competitions.astro';
@@ -24,6 +25,7 @@ import landing from '../data/landing.json';
   <main>
     <Hero {...landing.hero} />
     <GettingStarted {...landing.gettingStarted} />
+    <Demo youtubeChannelUrl={landing.footer.links[1].href} />
     <Competitions {...landing.competitions} />
     <Leaderboard {...landing.ranking} />
   </main>

@@ -1,0 +1,258 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import landing from '../data/landing.json';
+
+const GITHUB_REPO = 'https://github.com/aira-race/virtual-robot-race';
+
+const steps = [
+  {
+    number: '01',
+    title: 'Fork the Repository',
+    color: 'sky',
+    description: 'Forking creates your own copy on GitHub where you can save progress and experiment freely.',
+    items: [
+      { type: 'text', content: 'Open the repository and click the Fork button in the top-right corner.' },
+      { type: 'link', label: 'Open virtual-robot-race on GitHub →', href: GITHUB_REPO },
+      { type: 'text', content: 'Then clone your fork to your local machine:' },
+      { type: 'code', lang: 'bash', content: 'git clone https://github.com/YOUR_NAME/virtual-robot-race.git\ncd virtual-robot-race' },
+    ],
+  },
+  {
+    number: '02',
+    title: 'Set Up Your Environment',
+    color: 'violet',
+    description: 'Run the setup script to install all Python dependencies automatically.',
+    items: [
+      { type: 'text', content: 'On Windows, double-click or run from Command Prompt / PowerShell:' },
+      { type: 'code', lang: 'cmd', content: 'setup_env.bat' },
+      { type: 'text', content: 'Or manually with pip:' },
+      { type: 'code', lang: 'bash', content: 'pip install -r requirements.txt' },
+      { type: 'note', content: 'Python 3.9 or later is required.' },
+    ],
+  },
+  {
+    number: '03',
+    title: 'Set Your Race Name',
+    color: 'orange',
+    description: 'Your race name links your results to the leaderboard. It must match your aira display name exactly.',
+    items: [
+      { type: 'text', content: 'Open Robot1/robot_config.txt and set your name:' },
+      { type: 'code', lang: 'ini', content: '# Robot1/robot_config.txt\nNAME=YourAiraName   # ← letters & numbers only, max 16 chars\nRACE_FLAG=0         # keep 0 for practice runs' },
+      { type: 'note', content: 'Your aira display name must match NAME= exactly. Set it in your dashboard before racing.' },
+      { type: 'link', label: 'Set your display name in Dashboard →', href: '/dashboard' },
+    ],
+  },
+  {
+    number: '04',
+    title: 'Launch the Simulator',
+    color: 'emerald',
+    description: 'Start the Unity simulation environment first, then connect your Python controller.',
+    items: [
+      { type: 'text', content: 'Step 1 — Launch the Unity app (double-click or run from terminal):' },
+      { type: 'code', lang: 'cmd', content: 'Windows\\VirtualRobotRace_Beta.exe' },
+      { type: 'text', content: 'Step 2 — In a separate terminal, start the Python controller:' },
+      { type: 'code', lang: 'bash', content: 'python main.py' },
+      { type: 'note', content: 'The Unity window must be open before running main.py.' },
+    ],
+  },
+  {
+    number: '05',
+    title: 'Modify & Experiment',
+    color: 'sky',
+    description: "The default mode is rule-based. Edit the algorithm and see how it changes your robot's behaviour.",
+    items: [
+      { type: 'text', content: 'Your main algorithm file is here:' },
+      { type: 'code', lang: 'text', content: 'Robot1/rule_based_algorithms/driver_model.py' },
+      { type: 'text', content: 'Switch control modes in robot_config.txt:' },
+      { type: 'code', lang: 'ini', content: 'MODE_NUM=3   # 1=keyboard  2=csv  3=rule_based  4=ai' },
+      { type: 'link', label: 'Read the full lesson docs →', href: `${GITHUB_REPO}/tree/main/docs/lessons_EN` },
+    ],
+  },
+  {
+    number: '06',
+    title: 'Submit to the Leaderboard',
+    color: 'orange',
+    description: "When you're ready to compete, flip the race flag — your result will be posted automatically.",
+    items: [
+      { type: 'text', content: 'In Robot1/robot_config.txt, set:' },
+      { type: 'code', lang: 'ini', content: 'RACE_FLAG=1   # results will be posted after the run' },
+      { type: 'text', content: 'After the race finishes, your score is sent automatically. Check the leaderboard on the top page.' },
+      { type: 'link', label: 'View active competitions →', href: '/competitions' },
+    ],
+  },
+];
+
+const colorMap: Record<string, { badge: string; border: string; num: string; link: string; langBadge: string }> = {
+  sky:     { badge: 'bg-sky-100 text-sky-700',       border: 'border-sky-200',     num: 'text-sky-400',     link: 'text-sky-600 hover:text-sky-800',     langBadge: 'bg-sky-900/60 text-sky-300' },
+  violet:  { badge: 'bg-violet-100 text-violet-700', border: 'border-violet-200',  num: 'text-violet-400',  link: 'text-violet-600 hover:text-violet-800', langBadge: 'bg-violet-900/60 text-violet-300' },
+  orange:  { badge: 'bg-orange-100 text-orange-700', border: 'border-orange-200',  num: 'text-orange-400',  link: 'text-orange-600 hover:text-orange-800', langBadge: 'bg-orange-900/60 text-orange-300' },
+  emerald: { badge: 'bg-emerald-100 text-emerald-700', border: 'border-emerald-200', num: 'text-emerald-400', link: 'text-emerald-600 hover:text-emerald-800', langBadge: 'bg-emerald-900/60 text-emerald-300' },
+};
+---
+
+<Layout
+  title="Getting Started | aira"
+  description="Step-by-step guide to set up aira Beta 1.6 and run your first virtual robot race."
+  canonicalUrl={landing.site.url + '/getting-started'}
+  ogImage={landing.site.ogImage}
+  siteName={landing.site.name}
+  lang={landing.site.lang}
+>
+  <Header />
+  <main class="bg-arena-bg min-h-screen">
+
+    <!-- Page hero -->
+    <div class="relative pt-24 pb-16 px-4 sm:px-6 border-b border-arena-border overflow-hidden">
+      <div
+        class="absolute inset-0 pointer-events-none"
+        style="background-image: linear-gradient(to right, #e4e4e7 1px, transparent 1px), linear-gradient(to bottom, #e4e4e7 1px, transparent 1px); background-size: 48px 48px; opacity: 0.4;"
+        aria-hidden="true"
+      ></div>
+      <div class="relative max-w-3xl mx-auto text-center">
+        <span class="inline-block text-xs font-semibold tracking-widest text-sky-600 uppercase mb-4">Tutorial</span>
+        <h1 class="text-4xl sm:text-5xl font-light tracking-tight text-arena-ink">
+          Getting Started with<br/><span class="font-semibold">aira Beta 1.6</span>
+        </h1>
+        <p class="mt-6 text-lg text-arena-muted max-w-xl mx-auto">
+          Set up your environment, run the simulation, and submit your first result to the leaderboard — no prior AI experience needed.
+        </p>
+        <div class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
+          <a
+            href={GITHUB_REPO}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-2 px-6 py-3 text-sm font-semibold text-white bg-arena-solid rounded-full hover:bg-zinc-700 transition-colors"
+          >
+            <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd" />
+            </svg>
+            Fork on GitHub
+          </a>
+          <a
+            href="#step-01"
+            class="inline-flex items-center gap-2 px-6 py-3 text-sm font-semibold text-arena-ink border border-arena-border rounded-full hover:border-zinc-400 transition-colors"
+          >
+            Start the tutorial ↓
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Steps -->
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 py-16 space-y-12">
+      {steps.map((step) => {
+        const c = colorMap[step.color] ?? colorMap.sky;
+        return (
+          <div id={`step-${step.number}`} class={`rounded-2xl border ${c.border} bg-white p-8 shadow-sm`}>
+            <!-- Step header -->
+            <div class="flex items-start gap-4 mb-6">
+              <span class={`font-mono text-4xl font-bold leading-none ${c.num} opacity-40 select-none`}>{step.number}</span>
+              <div>
+                <h2 class="text-xl font-semibold text-arena-ink">{step.title}</h2>
+                <p class="mt-1 text-sm text-arena-muted">{step.description}</p>
+              </div>
+            </div>
+
+            <!-- Step content -->
+            <div class="space-y-4 ml-14">
+              {step.items.map((item) => {
+                if (item.type === 'text') {
+                  return <p class="text-sm text-arena-muted">{item.content}</p>;
+                }
+                if (item.type === 'code') {
+                  return (
+                    <div class="relative group rounded-xl overflow-hidden border border-zinc-800">
+                      <!-- Top bar: lang label + copy button -->
+                      <div class="flex items-center justify-between px-4 py-2 bg-zinc-900 border-b border-zinc-800">
+                        <span class={`text-xs font-mono font-semibold px-2 py-0.5 rounded ${c.langBadge}`}>
+                          {item.lang}
+                        </span>
+                        <button
+                          class="copy-btn flex items-center gap-1.5 text-xs text-zinc-400 hover:text-white transition-colors px-2 py-1 rounded hover:bg-zinc-700"
+                          data-code={item.content}
+                          aria-label="Copy code"
+                        >
+                          <svg class="copy-icon h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                          </svg>
+                          <svg class="check-icon h-3.5 w-3.5 hidden text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                          </svg>
+                          <span class="copy-label">Copy</span>
+                        </button>
+                      </div>
+                      <!-- Code content -->
+                      <pre class="bg-zinc-950 text-zinc-100 px-5 py-4 text-xs font-mono overflow-x-auto whitespace-pre leading-relaxed m-0">{item.content}</pre>
+                    </div>
+                  );
+                }
+                if (item.type === 'note') {
+                  return (
+                    <div class="flex items-start gap-2 text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-lg px-4 py-3">
+                      <span class="mt-0.5 shrink-0">⚠</span>
+                      <span>{item.content}</span>
+                    </div>
+                  );
+                }
+                if (item.type === 'link') {
+                  return (
+                    <a
+                      href={item.href}
+                      target={item.href?.startsWith('http') ? '_blank' : undefined}
+                      rel={item.href?.startsWith('http') ? 'noopener noreferrer' : undefined}
+                      class={`inline-flex items-center text-sm font-medium underline underline-offset-4 ${c.link} transition-colors`}
+                    >
+                      {item.label}
+                    </a>
+                  );
+                }
+                return null;
+              })}
+            </div>
+          </div>
+        );
+      })}
+    </div>
+
+    <!-- Bottom CTA -->
+    <div class="border-t border-arena-border">
+      <div class="max-w-3xl mx-auto px-4 sm:px-6 py-16 text-center">
+        <h2 class="text-2xl font-light tracking-tight text-arena-ink">Ready to compete?</h2>
+        <p class="mt-3 text-arena-muted">Join an active competition and put your algorithm to the test.</p>
+        <a
+          href="/competitions"
+          class="mt-6 inline-flex items-center px-8 py-3.5 text-base font-semibold text-white bg-orange-500 rounded-full hover:bg-orange-600 transition-colors"
+        >
+          View Competitions →
+        </a>
+      </div>
+    </div>
+
+  </main>
+  <Footer {...landing.footer} />
+</Layout>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('.copy-btn').forEach((btn) => {
+    btn.addEventListener('click', async () => {
+      const code = btn.dataset.code ?? '';
+      await navigator.clipboard.writeText(code);
+
+      const copyIcon = btn.querySelector('.copy-icon') as HTMLElement;
+      const checkIcon = btn.querySelector('.check-icon') as HTMLElement;
+      const label = btn.querySelector('.copy-label') as HTMLElement;
+
+      copyIcon.classList.add('hidden');
+      checkIcon.classList.remove('hidden');
+      label.textContent = 'Copied!';
+
+      setTimeout(() => {
+        copyIcon.classList.remove('hidden');
+        checkIcon.classList.add('hidden');
+        label.textContent = 'Copy';
+      }, 2000);
+    });
+  });
+</script>

@@ -1,7 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
-import { doc, getDoc, updateDoc } from 'firebase/firestore';
+import { doc, getDoc, updateDoc, collection, query, where, getDocs } from 'firebase/firestore';
 import { auth, db } from '../lib/firebase';
+
+const NAME_REGEX = /^[A-Za-z0-9]{1,16}$/;
+
+function validateDisplayName(name) {
+  if (!name) return 'Display name is required.';
+  if (!NAME_REGEX.test(name)) {
+    if (name.length > 16) return 'Max 16 characters.';
+    return 'Only letters (A–Z, a–z) and numbers (0–9) are allowed. No spaces or symbols.';
+  }
+  return null;
+}
 
 export default function DashboardHeader() {
   const [userData, setUserData] = useState(null);
@@ -9,6 +20,7 @@ export default function DashboardHeader() {
   const [isEditing, setIsEditing] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [editForm, setEditForm] = useState({ displayName: '', country: '' });
+  const [nameError, setNameError] = useState(null);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
@@ -30,16 +42,43 @@ export default function DashboardHeader() {
     return () => unsubscribe();
   }, []);
 
+  const handleNameChange = (e) => {
+    const value = e.target.value;
+    setEditForm({ ...editForm, displayName: value });
+    setNameError(validateDisplayName(value));
+  };
+
   const handleSave = async () => {
     if (!userData?.uid) return;
+
+    // Client-side validation
+    const validationError = validateDisplayName(editForm.displayName);
+    if (validationError) {
+      setNameError(validationError);
+      return;
+    }
+
     setIsSaving(true);
     try {
+      // Uniqueness check: skip if name unchanged
+      if (editForm.displayName !== userData.displayName) {
+        const q = query(collection(db, 'users'), where('displayName', '==', editForm.displayName));
+        const snapshot = await getDocs(q);
+        const taken = snapshot.docs.some(d => d.id !== userData.uid);
+        if (taken) {
+          setNameError('This name is already taken. Please choose another.');
+          setIsSaving(false);
+          return;
+        }
+      }
+
       await updateDoc(doc(db, 'users', userData.uid), {
         displayName: editForm.displayName,
         country: editForm.country,
       });
       setUserData(prev => ({ ...prev, ...editForm }));
       setIsEditing(false);
+      setNameError(null);
     } catch (e) {
       console.error('Update failed:', e);
       alert('Failed to save. Please try again.');
@@ -93,13 +132,24 @@ export default function DashboardHeader() {
           ) : (
             <div className="space-y-3 max-w-sm">
               <div>
-                <label className="block text-xs text-slate-400 mb-1">Display Name</label>
+                <div className="flex items-center justify-between mb-1">
+                  <label className="block text-xs text-slate-400">Display Name</label>
+                  <span className={`text-xs ${editForm.displayName.length > 16 ? 'text-red-400' : 'text-slate-500'}`}>
+                    {editForm.displayName.length}/16
+                  </span>
+                </div>
                 <input
                   type="text"
                   value={editForm.displayName}
-                  onChange={(e) => setEditForm({ ...editForm, displayName: e.target.value })}
-                  className="w-full bg-slate-900 border border-slate-600 rounded-lg px-3 py-2 text-white text-sm focus:ring-2 focus:ring-sky-500 focus:border-transparent outline-none"
+                  onChange={handleNameChange}
+                  maxLength={16}
+                  className={`w-full bg-slate-900 border rounded-lg px-3 py-2 text-white text-sm focus:ring-2 focus:border-transparent outline-none ${nameError ? 'border-red-500 focus:ring-red-500' : 'border-slate-600 focus:ring-sky-500'}`}
                 />
+                {nameError ? (
+                  <p className="mt-1 text-xs text-red-400">{nameError}</p>
+                ) : (
+                  <p className="mt-1 text-xs text-slate-500">Letters and numbers only (A–Z, 0–9). Used as <code className="text-sky-400">NAME=</code> in aira Beta 1.6 config.</p>
+                )}
               </div>
               <div>
                 <label className="block text-xs text-slate-400 mb-1">Country</label>
@@ -187,6 +237,7 @@ export default function DashboardHeader() {
                   onClick={() => {
                     setIsEditing(false);
                     setEditForm({ displayName: userData.displayName || '', country: userData.country || '' });
+                    setNameError(null);
                   }}
                   className="text-slate-400 hover:text-white text-sm px-4 py-2 rounded-lg border border-slate-700 hover:border-slate-500 transition-colors"
                 >

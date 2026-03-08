@@ -1,21 +1,19 @@
 ---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import landing from '../data/landing.json';
+
 interface Competition {
   ID: string;
   Title: string;
-  Status: string;
+  Status: string;         // 'Active' | 'Upcoming' | 'Ended'
   Description?: string;
   StartDate?: string;
   EndDate?: string;
   Prize?: string;
   DetailUrl?: string;
 }
-
-interface Props {
-  title: string;
-  description: string;
-}
-
-const { title, description } = Astro.props;
 
 let competitions: Competition[] = [];
 let fetchError = false;
@@ -34,10 +32,11 @@ try {
   fetchError = true;
 }
 
+// Status badge config
 const statusStyle: Record<string, { label: string; badge: string }> = {
-  Active:   { label: 'Active',   badge: 'bg-emerald-100 text-emerald-700 border border-emerald-200' },
-  Upcoming: { label: 'Upcoming', badge: 'bg-orange-100 text-orange-700 border border-orange-200' },
-  Ended:    { label: 'Ended',    badge: 'bg-zinc-100 text-zinc-500 border border-zinc-200' },
+  Active:   { label: 'Active',    badge: 'bg-emerald-100 text-emerald-700 border border-emerald-200' },
+  Upcoming: { label: 'Upcoming',  badge: 'bg-orange-100 text-orange-700 border border-orange-200' },
+  Ended:    { label: 'Ended',     badge: 'bg-zinc-100 text-zinc-500 border border-zinc-200' },
 };
 
 function getStatus(raw: string) {
@@ -53,20 +52,77 @@ function formatDate(raw: string | undefined): string {
 }
 ---
 
-<section id="competitions" class="py-20 sm:py-32 border-t border-arena-border">
-  <div class="max-w-5xl mx-auto px-4 sm:px-6">
-    <div class="text-center">
-      <h2 class="text-3xl font-light tracking-tight text-arena-ink sm:text-4xl">{title}</h2>
-      <p class="mt-4 text-lg leading-8 text-arena-muted">{description}</p>
+<Layout
+  title="Competitions | aira"
+  description="Compete in official aira races. Test your algorithm, climb the leaderboard, and win prizes."
+  canonicalUrl={landing.site.url + '/competitions'}
+  ogImage={landing.site.ogImage}
+  siteName={landing.site.name}
+  lang={landing.site.lang}
+>
+  <Header />
+  <main class="bg-arena-bg min-h-screen">
+
+    <!-- Page hero -->
+    <div class="relative pt-24 pb-16 px-4 sm:px-6 border-b border-arena-border overflow-hidden">
+      <div
+        class="absolute inset-0 pointer-events-none"
+        style="background-image: linear-gradient(to right, #e4e4e7 1px, transparent 1px), linear-gradient(to bottom, #e4e4e7 1px, transparent 1px); background-size: 48px 48px; opacity: 0.4;"
+        aria-hidden="true"
+      ></div>
+      <div class="relative max-w-3xl mx-auto text-center">
+        <span class="inline-block text-xs font-semibold tracking-widest text-orange-500 uppercase mb-4">Compete</span>
+        <h1 class="text-4xl sm:text-5xl font-light tracking-tight text-arena-ink">
+          Competitions
+        </h1>
+        <p class="mt-6 text-lg text-arena-muted max-w-xl mx-auto">
+          Official aira races. Submit your algorithm, beat the leaderboard, and earn prize money.
+        </p>
+        <div class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
+          <a
+            href="/getting-started"
+            class="inline-flex items-center gap-2 px-6 py-3 text-sm font-semibold text-white bg-sky-500 rounded-full hover:bg-sky-600 transition-colors"
+          >
+            New? Start the Tutorial →
+          </a>
+          <a
+            href="/#ranking"
+            class="inline-flex items-center gap-2 px-6 py-3 text-sm font-semibold text-arena-ink border border-arena-border rounded-full hover:border-zinc-400 transition-colors"
+          >
+            View Ranking
+          </a>
+        </div>
+      </div>
     </div>
 
-    <div class="mt-12">
+    <!-- Competitions list -->
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 py-16">
+
       {fetchError ? (
-        <div class="text-center bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-lg">
-          <p class="font-bold">Error</p>
-          <p class="text-sm">Failed to load competitions. Please check the API configuration.</p>
+        <!-- Error state -->
+        <div class="max-w-xl mx-auto text-center bg-red-50 border border-red-200 rounded-2xl px-8 py-10">
+          <p class="text-red-600 font-semibold text-lg">Could not load competitions</p>
+          <p class="mt-2 text-sm text-red-500">The server returned an error. Please try refreshing the page.</p>
         </div>
-      ) : competitions.length > 0 ? (
+      ) : competitions.length === 0 ? (
+        <!-- Empty state -->
+        <div class="max-w-xl mx-auto text-center bg-arena-surface border border-arena-border rounded-2xl px-8 py-16">
+          <div class="mx-auto mb-5 h-14 w-14 rounded-full bg-zinc-100 flex items-center justify-center">
+            <svg class="h-7 w-7 text-zinc-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6l4 2m6-2a10 10 0 11-20 0 10 10 0 0120 0z" />
+            </svg>
+          </div>
+          <p class="text-lg font-light text-arena-ink">No competitions yet</p>
+          <p class="mt-2 text-sm text-arena-muted">The first race is coming soon. Get your algorithm ready!</p>
+          <a
+            href="/getting-started"
+            class="mt-6 inline-flex items-center px-6 py-3 text-sm font-semibold text-white bg-sky-500 rounded-full hover:bg-sky-600 transition-colors"
+          >
+            Start the Tutorial →
+          </a>
+        </div>
+      ) : (
+        <!-- Competition cards -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {competitions.map((comp) => {
             const st = getStatus(comp.Status);
@@ -75,7 +131,7 @@ function formatDate(raw: string | undefined): string {
                 <!-- Card header -->
                 <div class="px-6 pt-6 pb-4 border-b border-arena-border">
                   <div class="flex items-start justify-between gap-3">
-                    <h3 class="text-base font-semibold text-arena-ink leading-snug">{comp.Title || 'Untitled Competition'}</h3>
+                    <h2 class="text-base font-semibold text-arena-ink leading-snug">{comp.Title || 'Untitled Competition'}</h2>
                     <span class={`shrink-0 text-xs font-semibold px-2.5 py-1 rounded-full ${st.badge}`}>{st.label}</span>
                   </div>
                   {comp.Description && (
@@ -130,24 +186,23 @@ function formatDate(raw: string | undefined): string {
             );
           })}
         </div>
-      ) : (
-        <div class="text-center bg-arena-surface border border-arena-border text-arena-muted px-4 py-8 rounded-lg">
-          <p>There are no active competitions at the moment.</p>
-          <p class="mt-2 text-sm">Please check back later!</p>
-        </div>
       )}
     </div>
 
-    <!-- Link to full competitions page -->
-    {competitions.length > 0 && (
-      <div class="mt-10 text-center">
+    <!-- Bottom CTA -->
+    <div class="border-t border-arena-border">
+      <div class="max-w-3xl mx-auto px-4 sm:px-6 py-16 text-center">
+        <h2 class="text-2xl font-light tracking-tight text-arena-ink">New to aira?</h2>
+        <p class="mt-3 text-arena-muted">Follow the step-by-step tutorial and have your robot running in under 2 minutes.</p>
         <a
-          href="/competitions"
-          class="inline-flex items-center gap-1 text-sm font-medium text-arena-muted hover:text-arena-ink transition-colors"
+          href="/getting-started"
+          class="mt-6 inline-flex items-center px-8 py-3.5 text-base font-semibold text-white bg-sky-500 rounded-full hover:bg-sky-600 transition-colors"
         >
-          View all competitions →
+          Start the Tutorial →
         </a>
       </div>
-    )}
-  </div>
-</section>
+    </div>
+
+  </main>
+  <Footer {...landing.footer} />
+</Layout>
