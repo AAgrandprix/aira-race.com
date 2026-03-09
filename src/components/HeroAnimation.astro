@@ -18,14 +18,14 @@
   }
 
   function draw(p) {
-    p.background(10, 10, 20); // Dark blue background
+    p.background(250, 250, 250); // arena-bg (zinc-50)
     for (let i = 0; i < particles.length; i++) {
       particles[i].update(p);
       particles[i].display(p);
       for (let j = i + 1; j < particles.length; j++) {
         let distance = p.dist(particles[i].x, particles[i].y, particles[j].x, particles[j].y);
         if (distance < 100) {
-          p.stroke(255, 255, 255, p.map(distance, 0, 100, 200, 0));
+          p.stroke(24, 24, 27, p.map(distance, 0, 100, 80, 0)); // zinc-900 with fade
           p.line(particles[i].x, particles[i].y, particles[j].x, particles[j].y);
         }
       }
@@ -55,7 +55,7 @@
 
     display() {
       this.p.noStroke();
-      this.p.fill(255);
+      this.p.fill(24, 24, 27); // zinc-900
       this.p.ellipse(this.x, this.y, 3, 3);
     }
   }

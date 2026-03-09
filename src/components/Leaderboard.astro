@@ -9,14 +9,14 @@ const { title, description } = Astro.props;
 const sheetURL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vROK_C64IVXo0U73qZVUo-iPFqTCr4RyX2kh-wU8dGTjOQMnPDSQJEutpGP1LsYibrk9rcNpQ5gXJiR/pubhtml?gid=0&single=true';
 ---
 
-<section id="ranking" class="px-6 py-24 sm:py-32">
+<section id="ranking" class="px-6 py-24 sm:py-32 border-t border-arena-border">
   <div class="mx-auto max-w-5xl text-center">
-    <h2 class="text-4xl font-bold tracking-tighter sm:text-5xl">{title}</h2>
-    <p class="mt-4 text-slate-300 max-w-2xl mx-auto">{description}</p>
+    <h2 class="text-4xl font-light tracking-tighter text-arena-ink sm:text-5xl">{title}</h2>
+    <p class="mt-4 text-arena-muted max-w-2xl mx-auto">{description}</p>
     <div class="mt-12 max-w-xl mx-auto">
       <iframe
         src={`${sheetURL}&amp;widget=true&amp;headers=false`}
-        class="w-full h-[700px] border border-slate-500/20 rounded-2xl bg-transparent"
+        class="w-full h-[700px] border border-arena-border rounded-2xl bg-transparent"
         frameborder="0"
       >
         Loading Leaderboard…
