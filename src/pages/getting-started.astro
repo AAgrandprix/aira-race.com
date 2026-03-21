@@ -3,6 +3,7 @@ import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import landing from '../data/landing.json';
+import LeaderboardTable from '../components/LeaderboardTable.jsx';
 
 const GITHUB_REPO = 'https://github.com/aira-race/virtual-robot-race';
 
@@ -29,7 +30,7 @@ const steps = [
       { type: 'code', lang: 'cmd', content: 'setup_env.bat' },
       { type: 'text', content: 'Or manually with pip:' },
       { type: 'code', lang: 'bash', content: 'pip install -r requirements.txt' },
-      { type: 'note', content: 'Python 3.9 or later is required.' },
+      { type: 'note', content: 'Python 3.12 or later is recommended (3.13 also works).' },
     ],
   },
   {
@@ -38,8 +39,8 @@ const steps = [
     color: 'orange',
     description: 'Your race name links your results to the leaderboard. It must match your aira display name exactly.',
     items: [
-      { type: 'text', content: 'Open Robot1/robot_config.txt and set your name:' },
-      { type: 'code', lang: 'ini', content: '# Robot1/robot_config.txt\nNAME=YourAiraName   # ← letters & numbers only, max 16 chars\nRACE_FLAG=0         # keep 0 for practice runs' },
+      { type: 'text', content: 'Open config.txt in the repository root and set your name:' },
+      { type: 'code', lang: 'ini', content: '# config.txt\nNAME=YourAiraName          # ← A-Z, a-z, 0-9, underscore, max 16 chars\nCOMPETITION_NAME=Tutorial  # use Tutorial for practice\nRACE_FLAG=0                # keep 0 for practice runs' },
       { type: 'note', content: 'Your aira display name must match NAME= exactly. Set it in your dashboard before racing.' },
       { type: 'link', label: 'Set your display name in Dashboard →', href: '/dashboard' },
     ],
@@ -48,13 +49,11 @@ const steps = [
     number: '04',
     title: 'Launch the Simulator',
     color: 'emerald',
-    description: 'Start the Unity simulation environment first, then connect your Python controller.',
+    description: 'Run a single command — Unity launches automatically and the race begins.',
     items: [
-      { type: 'text', content: 'Step 1 — Launch the Unity app (double-click or run from terminal):' },
-      { type: 'code', lang: 'cmd', content: 'Windows\\VirtualRobotRace_Beta.exe' },
-      { type: 'text', content: 'Step 2 — In a separate terminal, start the Python controller:' },
+      { type: 'text', content: 'Run main.py from your terminal:' },
       { type: 'code', lang: 'bash', content: 'python main.py' },
-      { type: 'note', content: 'The Unity window must be open before running main.py.' },
+      { type: 'note', content: 'Unity launches automatically. You do not need to start it manually.' },
     ],
   },
   {
@@ -65,8 +64,8 @@ const steps = [
     items: [
       { type: 'text', content: 'Your main algorithm file is here:' },
       { type: 'code', lang: 'text', content: 'Robot1/rule_based_algorithms/driver_model.py' },
-      { type: 'text', content: 'Switch control modes in robot_config.txt:' },
-      { type: 'code', lang: 'ini', content: 'MODE_NUM=3   # 1=keyboard  2=csv  3=rule_based  4=ai' },
+      { type: 'text', content: 'Switch control modes in config.txt:' },
+      { type: 'code', lang: 'ini', content: 'R1_MODE_NUM=3   # 1=keyboard  2=csv  3=rule_based  4=ai' },
       { type: 'link', label: 'Read the full lesson docs →', href: `${GITHUB_REPO}/tree/main/docs/lessons_EN` },
     ],
   },
@@ -76,7 +75,7 @@ const steps = [
     color: 'orange',
     description: "When you're ready to compete, flip the race flag — your result will be posted automatically.",
     items: [
-      { type: 'text', content: 'In Robot1/robot_config.txt, set:' },
+      { type: 'text', content: 'In config.txt, set:' },
       { type: 'code', lang: 'ini', content: 'RACE_FLAG=1   # results will be posted after the run' },
       { type: 'text', content: 'After the race finishes, your score is sent automatically. Check the leaderboard on the top page.' },
       { type: 'link', label: 'View active competitions →', href: '/competitions' },
@@ -94,7 +93,7 @@ const colorMap: Record<string, { badge: string; border: string; num: string; lin
 
 <Layout
   title="Getting Started | aira"
-  description="Step-by-step guide to set up aira Beta 1.6 and run your first virtual robot race."
+  description="Step-by-step guide to set up aira Beta 1.7 and run your first virtual robot race."
   canonicalUrl={landing.site.url + '/getting-started'}
   ogImage={landing.site.ogImage}
   siteName={landing.site.name}
@@ -113,7 +112,7 @@ const colorMap: Record<string, { badge: string; border: string; num: string; lin
       <div class="relative max-w-3xl mx-auto text-center">
         <span class="inline-block text-xs font-semibold tracking-widest text-sky-600 uppercase mb-4">Tutorial</span>
         <h1 class="text-4xl sm:text-5xl font-light tracking-tight text-arena-ink">
-          Getting Started with<br/><span class="font-semibold">aira Beta 1.6</span>
+          Getting Started with<br/><span class="font-semibold">aira Beta 1.7</span>
         </h1>
         <p class="mt-6 text-lg text-arena-muted max-w-xl mx-auto">
           Set up your environment, run the simulation, and submit your first result to the leaderboard — no prior AI experience needed.
@@ -214,6 +213,18 @@ const colorMap: Record<string, { badge: string; border: string; num: string; lin
           </div>
         );
       })}
+    </div>
+
+    <!-- Tutorial Leaderboard -->
+    <div class="border-t border-arena-border">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 py-16">
+        <div class="mb-8 text-center">
+          <span class="inline-block text-xs font-semibold tracking-widest text-sky-600 uppercase mb-3">Rankings</span>
+          <h2 class="text-2xl font-light tracking-tight text-arena-ink">Tutorial Leaderboard</h2>
+          <p class="mt-2 text-sm text-arena-muted">All submissions — newest first.</p>
+        </div>
+        <LeaderboardTable client:load />
+      </div>
     </div>
 
     <!-- Bottom CTA -->

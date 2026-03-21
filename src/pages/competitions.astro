@@ -8,6 +8,7 @@ interface Competition {
   ID: string;
   Title: string;
   Status: string;         // 'Active' | 'Upcoming' | 'Ended'
+  Type?: string;          // 'TimeAttack' | 'Race'
   Description?: string;
   StartDate?: string;
   EndDate?: string;
@@ -132,7 +133,7 @@ function formatDate(raw: string | undefined): string {
                 <div class="px-6 pt-6 pb-4 border-b border-arena-border">
                   <div class="flex items-start justify-between gap-3">
                     <h2 class="text-base font-semibold text-arena-ink leading-snug">{comp.Title || 'Untitled Competition'}</h2>
-                    <span class={`shrink-0 text-xs font-semibold px-2.5 py-1 rounded-full ${st.badge}`}>{st.label}</span>
+                    <span class={`text-xs font-semibold px-2.5 py-1 rounded-full shrink-0 ${st.badge}`}>{st.label}</span>
                   </div>
                   {comp.Description && (
                     <p class="mt-2 text-sm text-arena-muted leading-relaxed">{comp.Description}</p>
@@ -164,23 +165,12 @@ function formatDate(raw: string | undefined): string {
 
                 <!-- Card footer -->
                 <div class="px-6 pb-6">
-                  {comp.DetailUrl ? (
-                    <a
-                      href={comp.DetailUrl}
-                      target={comp.DetailUrl.startsWith('http') ? '_blank' : undefined}
-                      rel={comp.DetailUrl.startsWith('http') ? 'noopener noreferrer' : undefined}
-                      class="w-full inline-flex items-center justify-center px-4 py-2.5 text-sm font-semibold text-white bg-orange-500 rounded-full hover:bg-orange-600 transition-colors"
-                    >
-                      View Details →
-                    </a>
-                  ) : (
-                    <a
-                      href="/getting-started"
-                      class="w-full inline-flex items-center justify-center px-4 py-2.5 text-sm font-semibold text-arena-ink border border-arena-border rounded-full hover:border-zinc-400 transition-colors"
-                    >
-                      Get Ready →
-                    </a>
-                  )}
+                  <a
+                    href={`/competitions/${comp.ID}`}
+                    class="w-full inline-flex items-center justify-center px-4 py-2.5 text-sm font-semibold text-white bg-orange-500 rounded-full hover:bg-orange-600 transition-colors"
+                  >
+                    View Details →
+                  </a>
                 </div>
               </div>
             );

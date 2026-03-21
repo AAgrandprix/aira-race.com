@@ -1,0 +1,45 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import LeaderboardTable from '../components/LeaderboardTable.jsx';
+import landing from '../data/landing.json';
+---
+
+<Layout
+  title="Leaderboard | aira"
+  description="AI Race Arena — Race rankings. Best time per participant, updated in real-time."
+  canonicalUrl={`${landing.site.url}/leaderboard`}
+  ogImage={landing.site.ogImage}
+  siteName={landing.site.name}
+  lang={landing.site.lang}
+>
+  <Header />
+  <main class="bg-arena-bg min-h-screen">
+
+    <!-- Page hero -->
+    <div class="relative pt-24 pb-16 px-4 sm:px-6 border-b border-arena-border overflow-hidden">
+      <div
+        class="absolute inset-0 pointer-events-none"
+        style="background-image: linear-gradient(to right, #e4e4e7 1px, transparent 1px), linear-gradient(to bottom, #e4e4e7 1px, transparent 1px); background-size: 48px 48px; opacity: 0.4;"
+        aria-hidden="true"
+      ></div>
+      <div class="relative max-w-3xl mx-auto text-center">
+        <span class="inline-block text-xs font-semibold tracking-widest text-orange-500 uppercase mb-4">Rankings</span>
+        <h1 class="text-4xl sm:text-5xl font-light tracking-tight text-arena-ink">
+          Leaderboard
+        </h1>
+        <p class="mt-6 text-lg text-arena-muted max-w-xl mx-auto">
+          Best time per participant — submitted via aira Beta. Select a race to view its standings.
+        </p>
+      </div>
+    </div>
+
+    <!-- Table section -->
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 py-16">
+      <LeaderboardTable client:load showTabs={true} />
+    </div>
+
+  </main>
+  <Footer {...landing.footer} />
+</Layout>

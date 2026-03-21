@@ -1,0 +1,254 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import JoinButton from '../../components/JoinButton.jsx';
+import LeaderboardTable from '../../components/LeaderboardTable.jsx';
+import landing from '../../data/landing.json';
+
+interface Competition {
+  ID: string;
+  Title: string;
+  Status: string;
+  Type?: string;          // 'TimeAttack' | 'Race'
+  Description?: string;
+  StartDate?: string;
+  EndDate?: string;
+  Prize?: string;
+  Rules?: string;
+  Submission?: string;
+  Terms?: string;
+  Announcements?: string;
+}
+
+export async function getStaticPaths() {
+  const apiUrl = import.meta.env.PUBLIC_GAS_API_URL;
+  if (!apiUrl) return [];
+  try {
+    const res = await fetch(apiUrl);
+    if (!res.ok) return [];
+    const competitions: Competition[] = await res.json();
+    return competitions.map(comp => ({
+      params: { id: String(comp.ID) },
+      props: { comp },
+    }));
+  } catch {
+    return [];
+  }
+}
+
+interface Props { comp: Competition; }
+const { comp } = Astro.props;
+
+const statusStyle: Record<string, { label: string; badge: string }> = {
+  Active:   { label: 'Active',   badge: 'bg-emerald-100 text-emerald-700 border border-emerald-200' },
+  Upcoming: { label: 'Upcoming', badge: 'bg-orange-100 text-orange-700 border border-orange-200' },
+  Ended:    { label: 'Ended',    badge: 'bg-zinc-100 text-zinc-500 border border-zinc-200' },
+};
+function getStatus(raw: string) {
+  const key = raw?.trim() ?? '';
+  return statusStyle[key] ?? { label: key || 'TBD', badge: 'bg-zinc-100 text-zinc-500 border border-zinc-200' };
+}
+function formatDate(raw: string | undefined): string {
+  if (!raw) return '';
+  const d = new Date(raw);
+  if (isNaN(d.getTime())) return String(raw);
+  return d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric', timeZone: 'Asia/Tokyo' });
+}
+
+const st = getStatus(comp.Status);
+const isJoinable = comp.Status === 'Active' || comp.Status === 'Upcoming';
+const pageTitle = `${comp.Title || 'Competition'} | aira`;
+
+---
+
+<Layout
+  title={pageTitle}
+  description={comp.Description || `Join ${comp.Title} on aira.`}
+  canonicalUrl={`${landing.site.url}/competitions/${comp.ID}`}
+  ogImage={landing.site.ogImage}
+  siteName={landing.site.name}
+  lang={landing.site.lang}
+>
+  <Header />
+  <main class="bg-arena-bg min-h-screen">
+
+    <!-- Hero -->
+    <div class="relative pt-24 pb-12 px-4 sm:px-6 border-b border-arena-border overflow-hidden">
+      <div
+        class="absolute inset-0 pointer-events-none"
+        style="background-image: linear-gradient(to right, #e4e4e7 1px, transparent 1px), linear-gradient(to bottom, #e4e4e7 1px, transparent 1px); background-size: 48px 48px; opacity: 0.4;"
+        aria-hidden="true"
+      ></div>
+      <div class="relative max-w-5xl mx-auto">
+        <a href="/competitions" class="inline-flex items-center gap-1 text-sm text-arena-muted hover:text-arena-ink transition-colors mb-6">
+          <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+          </svg>
+          All Competitions
+        </a>
+        <div class="flex flex-wrap items-center gap-3 mb-3">
+          <span class={`text-xs font-semibold px-2.5 py-1 rounded-full ${st.badge}`}>{st.label}</span>
+{comp.Prize && (
+            <span class="text-xs font-semibold px-2.5 py-1 rounded-full bg-orange-50 text-orange-600 border border-orange-200">
+              Prize: {comp.Prize}
+            </span>
+          )}
+        </div>
+        <h1 class="text-3xl sm:text-4xl font-light tracking-tight text-arena-ink">
+          {comp.Title || 'Competition'}
+        </h1>
+        {(comp.StartDate || comp.EndDate) && (
+          <p class="mt-3 text-sm text-arena-muted">
+            {formatDate(comp.StartDate)}
+            {comp.EndDate ? ` – ${formatDate(comp.EndDate)}` : ''}
+          </p>
+        )}
+      </div>
+    </div>
+
+    <!-- Body -->
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 py-12">
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
+
+        <!-- Left: main content -->
+        <div class="lg:col-span-2 space-y-10">
+
+          <!-- Overview -->
+          <section>
+            <h2 class="text-xs font-semibold uppercase tracking-widest text-orange-500 mb-3">Overview</h2>
+            {comp.Description ? (
+              <p class="text-arena-ink leading-relaxed whitespace-pre-wrap">{comp.Description}</p>
+            ) : (
+              <p class="text-arena-muted italic">Details coming soon.</p>
+            )}
+          </section>
+
+          <!-- Rules -->
+          <section>
+            <h2 class="text-xs font-semibold uppercase tracking-widest text-orange-500 mb-3">Rules</h2>
+            {comp.Rules ? (
+              <p class="text-arena-ink leading-relaxed whitespace-pre-wrap">{comp.Rules}</p>
+            ) : (
+              <p class="text-arena-muted italic">Rules will be posted soon.</p>
+            )}
+          </section>
+
+          <!-- Submission Method -->
+          <section>
+            <h2 class="text-xs font-semibold uppercase tracking-widest text-orange-500 mb-3">How to Submit</h2>
+            {comp.Submission ? (
+              <p class="text-arena-ink leading-relaxed whitespace-pre-wrap">{comp.Submission}</p>
+            ) : (
+              <p class="text-arena-muted italic">Submission instructions will be posted soon.</p>
+            )}
+          </section>
+
+          <!-- Terms -->
+          <section>
+            <h2 class="text-xs font-semibold uppercase tracking-widest text-orange-500 mb-3">Terms & Conditions</h2>
+            {comp.Terms ? (
+              <p class="text-arena-ink leading-relaxed whitespace-pre-wrap">{comp.Terms}</p>
+            ) : (
+              <p class="text-arena-muted">
+                By joining this competition you agree to the{' '}
+                <a href="/agreement" target="_blank" class="text-sky-500 hover:underline">Participant Agreement</a>.
+              </p>
+            )}
+          </section>
+
+          <!-- Announcements -->
+          {comp.Announcements && (
+            <section>
+              <h2 class="text-xs font-semibold uppercase tracking-widest text-orange-500 mb-3">Announcements</h2>
+              <div class="bg-orange-50 border border-orange-200 rounded-xl px-5 py-4">
+                <p class="text-sm text-orange-800 leading-relaxed whitespace-pre-wrap">{comp.Announcements}</p>
+              </div>
+            </section>
+          )}
+
+        </div>
+
+        <!-- Right: sidebar -->
+        <div class="space-y-6">
+
+          <!-- Schedule card -->
+          {(comp.StartDate || comp.EndDate) && (
+            <div class="bg-white border border-arena-border rounded-2xl p-5 shadow-sm">
+              <h3 class="text-xs font-semibold uppercase tracking-widest text-zinc-400 mb-3">Schedule</h3>
+              <div class="space-y-2">
+                {comp.StartDate && (
+                  <div class="flex justify-between text-sm">
+                    <span class="text-arena-muted">Start</span>
+                    <span class="font-medium text-arena-ink">{formatDate(comp.StartDate)}</span>
+                  </div>
+                )}
+                {comp.EndDate && (
+                  <div class="flex justify-between text-sm">
+                    <span class="text-arena-muted">End</span>
+                    <span class="font-medium text-arena-ink">{formatDate(comp.EndDate)}</span>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
+          <!-- Prize card -->
+          {comp.Prize && (
+            <div class="bg-white border border-arena-border rounded-2xl p-5 shadow-sm">
+              <h3 class="text-xs font-semibold uppercase tracking-widest text-zinc-400 mb-3">Prize</h3>
+              <p class="text-2xl font-semibold text-orange-500">{comp.Prize}</p>
+              <p class="mt-1 text-xs text-zinc-400">* Required for prize money disbursement: country registration at sign-up.</p>
+            </div>
+          )}
+
+          <!-- Race ID card -->
+          <div class="bg-white border border-arena-border rounded-2xl p-5 shadow-sm">
+            <h3 class="text-xs font-semibold uppercase tracking-widest text-zinc-400 mb-3">Race ID</h3>
+            <p class="text-xs text-arena-muted mb-3">Paste this into aira Beta Config to start racing.</p>
+            <div
+              x-data="{ copied: false }"
+              class="flex items-center gap-2"
+            >
+              <code class="flex-1 font-mono text-sm bg-zinc-100 text-arena-ink px-3 py-2 rounded-lg truncate select-all">
+                {comp.ID}
+              </code>
+              <button
+                x-on:click={`navigator.clipboard.writeText('${comp.ID}').then(() => { copied = true; setTimeout(() => copied = false, 2000) })`}
+                class="shrink-0 flex items-center gap-1.5 px-3 py-2 text-xs font-semibold rounded-lg border transition-colors"
+                x-bind:class="copied
+                  ? 'bg-emerald-50 border-emerald-200 text-emerald-600'
+                  : 'bg-zinc-50 border-zinc-200 text-zinc-600 hover:border-zinc-400'"
+              >
+                <!-- Copy icon -->
+                <svg x-show="!copied" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                </svg>
+                <!-- Check icon -->
+                <svg x-show="copied" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                </svg>
+                <span x-text="copied ? 'Copied!' : 'Copy'"></span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Join section -->
+          <div class="bg-white border border-arena-border rounded-2xl p-5 shadow-sm">
+            <h3 class="text-xs font-semibold uppercase tracking-widest text-zinc-400 mb-4">Join</h3>
+            <JoinButton client:load compId={comp.ID} isJoinable={isJoinable} />
+          </div>
+
+</div>
+      </div>
+    <!-- Leaderboard section -->
+    <div class="border-t border-arena-border">
+      <div class="max-w-5xl mx-auto px-4 sm:px-6 py-12">
+        <h2 class="text-xs font-semibold uppercase tracking-widest text-orange-500 mb-6">Leaderboard</h2>
+        <LeaderboardTable client:load raceId={comp.ID} />
+      </div>
+    </div>
+
+  </main>
+  <Footer {...landing.footer} />
+</Layout>
