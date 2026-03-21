@@ -3,12 +3,27 @@ import { signInWithPopup, onAuthStateChanged } from 'firebase/auth';
 import { doc, getDoc, setDoc, serverTimestamp } from 'firebase/firestore';
 import { auth, db, googleProvider } from '../lib/firebase';
 
+const NAME_REGEX = /^[A-Za-z0-9_]{1,16}$/;
+
+function validateDisplayName(name) {
+  if (!name) return 'Display name is required.';
+  if (!NAME_REGEX.test(name)) {
+    if (name.length > 16) return 'Max 16 characters.';
+    return 'Only letters (A–Z, a–z), numbers (0–9), and underscores (_) are allowed. No spaces or other symbols.';
+  }
+  return null;
+}
+
 export default function LoginManager() {
   const [agreed, setAgreed] = useState(false);
   const [user, setUser] = useState(null);
   const [showModal, setShowModal] = useState(false);
-  const [isLoading, setIsLoading] = useState(true); // 初期はセッション確認中
+  const [isLoading, setIsLoading] = useState(true);
   const [formData, setFormData] = useState({ displayName: '', country: '' });
+  const [nameError, setNameError] = useState(null);
+  const [countryError, setCountryError] = useState(null);
+  const [playerToken, setPlayerToken] = useState(null); // 登録完了後に表示
+  const [tokenCopied, setTokenCopied] = useState(false);
 
   // ページ読み込み時にセッションを確認
   useEffect(() => {
@@ -55,6 +70,16 @@ export default function LoginManager() {
   const handleRegister = async (e) => {
     e.preventDefault();
     if (!user) return;
+    const validationError = validateDisplayName(formData.displayName);
+    if (validationError) {
+      setNameError(validationError);
+      return;
+    }
+    if (!formData.country) {
+      setCountryError('Please select your country.');
+      return;
+    }
+    setCountryError(null);
     setIsLoading(true);
 
     try {
@@ -74,11 +99,21 @@ export default function LoginManager() {
 
       const gasUrl = import.meta.env.PUBLIC_GAS_API_URL;
       if (gasUrl) {
-        fetch(gasUrl, {
-          method: 'POST',
-          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-          body: JSON.stringify({ type: 'USER_REGISTRATION', payload: registrationData })
-        }).catch(e => console.error("GAS send failed:", e));
+        try {
+          const gasRes = await fetch(gasUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            body: JSON.stringify({ type: 'USER_REGISTRATION', payload: registrationData })
+          });
+          const gasData = await gasRes.json();
+          if (gasData.player_token) {
+            setShowModal(false);
+            setPlayerToken(gasData.player_token);
+            return;
+          }
+        } catch (e) {
+          console.error("GAS send failed:", e);
+        }
       }
 
       window.location.href = "/dashboard";
@@ -146,6 +181,77 @@ export default function LoginManager() {
         </div>
       )}
 
+      {/* Player Token display — shown after successful registration */}
+      {playerToken && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/90 backdrop-blur-sm p-4">
+          <div className="bg-slate-800 border border-slate-700 rounded-xl p-8 max-w-md w-full shadow-2xl">
+            <div className="flex items-center gap-2 mb-2">
+              <span className="text-emerald-400 text-xl">✓</span>
+              <h3 className="text-xl font-bold text-white">Registration Complete!</h3>
+            </div>
+            <p className="text-slate-400 text-sm mb-6">
+              Your player token has been generated. Save it now — it's also in your confirmation email.
+            </p>
+
+            <div className="mb-2">
+              <p className="text-xs font-semibold uppercase tracking-widest text-slate-500 mb-2">Your Player Token</p>
+              <div className="flex items-center gap-2">
+                <code className="flex-1 font-mono text-sm bg-slate-900 text-sky-300 border border-slate-600 px-3 py-2.5 rounded-lg break-all select-all">
+                  {playerToken}
+                </code>
+                <button
+                  onClick={() => {
+                    navigator.clipboard.writeText(playerToken);
+                    setTokenCopied(true);
+                    setTimeout(() => setTokenCopied(false), 2000);
+                  }}
+                  className={`shrink-0 flex items-center gap-1.5 px-3 py-2.5 text-xs font-semibold rounded-lg border transition-colors ${
+                    tokenCopied
+                      ? 'bg-emerald-900/40 border-emerald-600 text-emerald-400'
+                      : 'bg-slate-700 border-slate-600 text-slate-300 hover:border-slate-400'
+                  }`}
+                >
+                  {tokenCopied ? (
+                    <>
+                      <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                      </svg>
+                      Copied!
+                    </>
+                  ) : (
+                    <>
+                      <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                      </svg>
+                      Copy
+                    </>
+                  )}
+                </button>
+              </div>
+            </div>
+
+            <div className="bg-amber-900/30 border border-amber-700/50 rounded-lg px-4 py-3 mb-6 mt-4">
+              <p className="text-xs text-amber-300 leading-relaxed">
+                <strong>Setup:</strong> Create <code className="bg-slate-900/60 px-1 rounded">player_secret.txt</code> in your aira repo root and add:<br />
+                <code className="text-sky-300">PLAYER_TOKEN={playerToken}</code>
+              </p>
+              <p className="text-xs text-amber-400/70 mt-1.5">Never commit this file to GitHub. It's already in .gitignore.</p>
+            </div>
+
+            <button
+              onClick={() => { window.location.href = "/dashboard"; }}
+              className="w-full bg-sky-500 hover:bg-sky-600 text-white font-bold py-3 px-4 rounded-lg transition-colors"
+            >
+              Continue to Dashboard →
+            </button>
+
+            <p className="text-xs text-slate-500 text-center mt-3">
+              A copy of this token has been sent to your email.
+            </p>
+          </div>
+        </div>
+      )}
+
       {showModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/90 backdrop-blur-sm p-4">
           <div className="bg-slate-800 border border-slate-700 rounded-xl p-8 max-w-md w-full shadow-2xl">
@@ -154,23 +260,42 @@ export default function LoginManager() {
 
             <form onSubmit={handleRegister} className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-slate-300 mb-1">Display Name</label>
+                <div className="flex items-center justify-between mb-1">
+                  <label className="block text-sm font-medium text-slate-300">Display Name</label>
+                  <span className={`text-xs ${formData.displayName.length > 16 ? 'text-red-400' : 'text-slate-500'}`}>
+                    {formData.displayName.length}/16
+                  </span>
+                </div>
                 <input
                   type="text"
                   required
+                  maxLength={16}
                   value={formData.displayName}
-                  onChange={(e) => setFormData({...formData, displayName: e.target.value})}
-                  className="w-full bg-slate-900 border border-slate-600 rounded-lg px-4 py-2 text-white focus:ring-2 focus:ring-sky-500 focus:border-transparent outline-none"
-                  placeholder="Racer Name"
+                  onChange={(e) => {
+                    setFormData({...formData, displayName: e.target.value});
+                    setNameError(validateDisplayName(e.target.value));
+                  }}
+                  className={`w-full bg-slate-900 border rounded-lg px-4 py-2 text-white focus:ring-2 focus:border-transparent outline-none ${nameError ? 'border-red-500 focus:ring-red-500' : 'border-slate-600 focus:ring-sky-500'}`}
+                  placeholder="Racer_Name_01"
                 />
+                {nameError ? (
+                  <p className="mt-1 text-xs text-red-400">{nameError}</p>
+                ) : (
+                  <p className="mt-1 text-xs text-slate-500">Letters, numbers, underscores only (A–Z, 0–9, _). This becomes <code className="text-sky-400">NAME=</code> in your config.txt.</p>
+                )}
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-slate-300 mb-1">Country</label>
+                <label className="block text-sm font-medium text-slate-300 mb-1">
+                  Country <span className="text-red-400">*</span>
+                </label>
                 <select
                   value={formData.country}
-                  onChange={(e) => setFormData({...formData, country: e.target.value})}
-                  className="w-full bg-slate-900 border border-slate-600 rounded-lg px-4 py-2 text-white focus:ring-2 focus:ring-sky-500 focus:border-transparent outline-none"
+                  onChange={(e) => {
+                    setFormData({...formData, country: e.target.value});
+                    if (e.target.value) setCountryError(null);
+                  }}
+                  className={`w-full bg-slate-900 border rounded-lg px-4 py-2 text-white focus:ring-2 focus:border-transparent outline-none ${countryError ? 'border-red-500 focus:ring-red-500' : 'border-slate-600 focus:ring-sky-500'}`}
                 >
                   <option value="">— Select your country —</option>
                   <option value="Afghanistan">Afghanistan</option>
@@ -237,7 +362,10 @@ export default function LoginManager() {
                   <option value="Vietnam">Vietnam</option>
                   <option value="Other">Other</option>
                 </select>
-                <p className="mt-1 text-xs text-amber-400/80">* Required for prize money disbursement.</p>
+                {countryError
+                  ? <p className="mt-1 text-xs text-red-400">{countryError}</p>
+                  : <p className="mt-1 text-xs text-amber-400/80">* Required for prize money disbursement.</p>
+                }
               </div>
 
               <div className="pt-4">

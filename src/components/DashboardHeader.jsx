@@ -3,13 +3,13 @@ import { onAuthStateChanged } from 'firebase/auth';
 import { doc, getDoc, updateDoc, collection, query, where, getDocs } from 'firebase/firestore';
 import { auth, db } from '../lib/firebase';
 
-const NAME_REGEX = /^[A-Za-z0-9]{1,16}$/;
+const NAME_REGEX = /^[A-Za-z0-9_]{1,16}$/;
 
 function validateDisplayName(name) {
   if (!name) return 'Display name is required.';
   if (!NAME_REGEX.test(name)) {
     if (name.length > 16) return 'Max 16 characters.';
-    return 'Only letters (A–Z, a–z) and numbers (0–9) are allowed. No spaces or symbols.';
+    return 'Only letters (A–Z, a–z), numbers (0–9), and underscores (_) are allowed. No spaces or other symbols.';
   }
   return null;
 }
@@ -21,6 +21,7 @@ export default function DashboardHeader() {
   const [isSaving, setIsSaving] = useState(false);
   const [editForm, setEditForm] = useState({ displayName: '', country: '' });
   const [nameError, setNameError] = useState(null);
+  const [tokenStatus, setTokenStatus] = useState(null); // null | 'sending' | 'sent' | 'error'
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
@@ -41,6 +42,26 @@ export default function DashboardHeader() {
     });
     return () => unsubscribe();
   }, []);
+
+  const handleReissueToken = async () => {
+    if (!userData?.uid || !userData?.email) return;
+    setTokenStatus('sending');
+    try {
+      const gasUrl = import.meta.env.PUBLIC_GAS_API_URL;
+      const res = await fetch(gasUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify({
+          type: 'REISSUE_TOKEN',
+          payload: { uid: userData.uid, email: userData.email, displayName: userData.displayName }
+        })
+      });
+      const data = await res.json();
+      setTokenStatus(data.status === 'success' ? 'sent' : 'error');
+    } catch {
+      setTokenStatus('error');
+    }
+  };
 
   const handleNameChange = (e) => {
     const value = e.target.value;
@@ -127,6 +148,23 @@ export default function DashboardHeader() {
                 >
                   Edit Profile
                 </button>
+                {tokenStatus === null && (
+                  <button
+                    onClick={handleReissueToken}
+                    className="text-xs text-slate-500 hover:text-amber-400 transition-colors border border-slate-700 hover:border-amber-500 rounded px-2 py-1"
+                  >
+                    Re-issue Player Token
+                  </button>
+                )}
+                {tokenStatus === 'sending' && (
+                  <span className="text-xs text-slate-500 px-2 py-1">Sending...</span>
+                )}
+                {tokenStatus === 'sent' && (
+                  <span className="text-xs text-emerald-400 px-2 py-1">✓ New token sent to your email</span>
+                )}
+                {tokenStatus === 'error' && (
+                  <span className="text-xs text-red-400 px-2 py-1">Failed. Please try again.</span>
+                )}
               </div>
             </>
           ) : (
@@ -148,7 +186,7 @@ export default function DashboardHeader() {
                 {nameError ? (
                   <p className="mt-1 text-xs text-red-400">{nameError}</p>
                 ) : (
-                  <p className="mt-1 text-xs text-slate-500">Letters and numbers only (A–Z, 0–9). Used as <code className="text-sky-400">NAME=</code> in aira Beta 1.6 config.</p>
+                  <p className="mt-1 text-xs text-slate-500">Letters, numbers, and underscores (A–Z, 0–9, _). Used as <code className="text-sky-400">NAME=</code> in aira Beta 1.7 config.</p>
                 )}
               </div>
               <div>

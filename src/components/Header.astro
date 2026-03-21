@@ -10,7 +10,7 @@ const { isLoggedIn = false } = Astro.props;
 const navLinks = [
   { text: 'Tutorial', href: '/getting-started' },
   { text: 'Competitions', href: '/competitions' },
-  { text: 'Ranking', href: '/#ranking' },
+  { text: 'Ranking', href: '/leaderboard' },
   { text: 'Vision', href: '/vision' },
 ];
 
@@ -24,7 +24,7 @@ const dashboardUrl = '/dashboard';
       {/* Site branding — invert to make black logo visible on dark bg */}
       <div class="shrink-0 mr-4">
         <a href="/">
-          <img class="h-9 w-auto rounded-md invert" src="/mark-aira.png" alt={landing.site.name} />
+          <img class="h-9 w-auto rounded-md" src="/mark-aira.png" alt={landing.site.name} />
         </a>
       </div>
 
