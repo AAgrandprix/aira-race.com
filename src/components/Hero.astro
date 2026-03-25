@@ -11,25 +11,38 @@ interface Props {
 const { tagline, subtitle, primaryCTA, secondaryCTA } = Astro.props;
 ---
 
-<!-- Hero: sky-50 ambient light + grid overlay -->
-<section class="relative min-h-screen flex items-center justify-center px-4 sm:px-6 pt-14 overflow-hidden">
-  <!-- Ambient gradient: sky glow at the top -->
-  <div class="absolute inset-0 bg-gradient-to-b from-sky-50 via-zinc-50 to-zinc-50 pointer-events-none" aria-hidden="true"></div>
-  <!-- Grid overlay -->
+<!-- Hero: dark background matching pitch deck style -->
+<section class="relative min-h-screen flex items-center justify-center px-4 sm:px-6 pt-14 overflow-hidden bg-[#080c18]">
+  <!-- Subtle cyan grid overlay -->
   <div
     class="absolute inset-0 pointer-events-none"
-    style="background-image: linear-gradient(to right, #e4e4e7 1px, transparent 1px), linear-gradient(to bottom, #e4e4e7 1px, transparent 1px); background-size: 48px 48px; opacity: 0.4;"
+    style="background-image: linear-gradient(to right, rgba(6,182,212,0.06) 1px, transparent 1px), linear-gradient(to bottom, rgba(6,182,212,0.06) 1px, transparent 1px); background-size: 48px 48px;"
     aria-hidden="true"
   ></div>
 
   <div class="relative max-w-3xl mx-auto text-center">
-    <h1 class="text-5xl sm:text-6xl md:text-7xl font-light tracking-tight text-arena-ink">
+    <h1 class="text-5xl sm:text-6xl md:text-7xl font-light tracking-tight text-white">
       {tagline}
     </h1>
-    <p class="mt-6 text-lg sm:text-xl text-arena-muted max-w-2xl mx-auto leading-relaxed whitespace-pre-line">
+    <p class="mt-6 text-lg sm:text-xl text-zinc-400 max-w-2xl mx-auto leading-relaxed whitespace-pre-line">
       {subtitle}
     </p>
-    <div class="mt-10">
+    <!-- Prize / competition signal -->
+    <div class="mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm text-zinc-500">
+      <span class="flex items-center gap-1.5">
+        <!-- Medal / prize icon -->
+        <svg class="w-4 h-4 text-yellow-500" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M12 2l2.4 4.8L20 8l-4 3.9.94 5.48L12 15l-4.94 2.38L9 12 5 8l5.6-1.2L12 2z"/>
+        </svg>
+        <span class="text-yellow-500 font-medium">Prize Competitions</span>
+      </span>
+      <span class="text-zinc-700">·</span>
+      <span>Physical AI</span>
+      <span class="text-zinc-700">·</span>
+      <span>Python-based</span>
+    </div>
+
+    <div class="mt-8">
       <HeroAnimation />
     </div>
     <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -38,14 +51,14 @@ const { tagline, subtitle, primaryCTA, secondaryCTA } = Astro.props;
         href={primaryCTA.href}
         target={primaryCTA.href.startsWith('http') ? '_blank' : undefined}
         rel={primaryCTA.href.startsWith('http') ? 'noopener noreferrer' : undefined}
-        class="w-full sm:w-auto inline-flex items-center justify-center px-8 py-3.5 text-base font-semibold text-white bg-sky-500 rounded-full hover:bg-sky-600 transition-colors"
+        class="w-full sm:w-auto inline-flex items-center justify-center px-8 py-3.5 text-base font-semibold text-white bg-sky-500 rounded-full hover:bg-sky-400 transition-colors"
       >
         {primaryCTA.text}
       </a>
       <!-- Secondary: View Competitions → orange -->
       <a
         href={secondaryCTA.href}
-        class="w-full sm:w-auto inline-flex items-center justify-center px-8 py-3.5 text-base font-semibold text-white bg-orange-500 rounded-full hover:bg-orange-600 transition-colors"
+        class="w-full sm:w-auto inline-flex items-center justify-center px-8 py-3.5 text-base font-semibold text-white bg-orange-500 rounded-full hover:bg-orange-400 transition-colors"
         target={secondaryCTA.href.startsWith('http') ? '_blank' : undefined}
         rel={secondaryCTA.href.startsWith('http') ? 'noopener noreferrer' : undefined}
       >

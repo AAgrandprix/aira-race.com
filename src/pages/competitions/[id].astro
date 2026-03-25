@@ -6,6 +6,9 @@ import JoinButton from '../../components/JoinButton.jsx';
 import LeaderboardTable from '../../components/LeaderboardTable.jsx';
 import landing from '../../data/landing.json';
 
+// Load all competition MD files
+const compDocs = import.meta.glob('../../content/competitions/*.md');
+
 interface Competition {
   ID: string;
   Title: string;
@@ -59,6 +62,14 @@ function formatDate(raw: string | undefined): string {
 const st = getStatus(comp.Status);
 const isJoinable = comp.Status === 'Active' || comp.Status === 'Upcoming';
 const pageTitle = `${comp.Title || 'Competition'} | aira`;
+
+// Try to load the matching MD file for this competition
+// Vite glob keys are relative to the file issuing the glob
+const docKey = `../../content/competitions/${comp.ID}.md`;
+// Also try the absolute-style key Vite sometimes generates
+const docKeyAlt = `/src/content/competitions/${comp.ID}.md`;
+const docLoader = compDocs[docKey] ?? compDocs[docKeyAlt] ?? null;
+const CompContent = docLoader ? (await docLoader() as any).Content : null;
 
 ---
 
@@ -124,47 +135,66 @@ const pageTitle = `${comp.Title || 'Competition'} | aira`;
             )}
           </section>
 
-          <!-- Rules -->
-          <section>
-            <h2 class="text-xs font-semibold uppercase tracking-widest text-orange-500 mb-3">Rules</h2>
-            {comp.Rules ? (
-              <p class="text-arena-ink leading-relaxed whitespace-pre-wrap">{comp.Rules}</p>
-            ) : (
-              <p class="text-arena-muted italic">Rules will be posted soon.</p>
-            )}
-          </section>
+          <!-- Rules & below: MD file if available, otherwise GAS fields -->
+          {CompContent ? (
+            <article class="
+              prose max-w-none
+              prose-headings:font-semibold
+              prose-h2:text-base prose-h2:uppercase prose-h2:tracking-widest prose-h2:text-orange-500 prose-h2:mt-8 prose-h2:mb-3
+              prose-p:text-arena-ink prose-p:leading-relaxed
+              prose-strong:text-arena-ink
+              prose-a:text-sky-500 prose-a:no-underline hover:prose-a:underline
+              prose-ul:text-arena-ink prose-li:text-arena-ink
+              prose-code:bg-zinc-100 prose-code:text-zinc-700 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:text-xs prose-code:before:content-none prose-code:after:content-none
+              prose-hr:border-arena-border
+            ">
+              <CompContent />
+            </article>
+          ) : (
+            <>
+              <!-- Rules (GAS fallback) -->
+              <section>
+                <h2 class="text-xs font-semibold uppercase tracking-widest text-orange-500 mb-3">Rules</h2>
+                {comp.Rules ? (
+                  <p class="text-arena-ink leading-relaxed whitespace-pre-wrap">{comp.Rules}</p>
+                ) : (
+                  <p class="text-arena-muted italic">Rules will be posted soon.</p>
+                )}
+              </section>
 
-          <!-- Submission Method -->
-          <section>
-            <h2 class="text-xs font-semibold uppercase tracking-widest text-orange-500 mb-3">How to Submit</h2>
-            {comp.Submission ? (
-              <p class="text-arena-ink leading-relaxed whitespace-pre-wrap">{comp.Submission}</p>
-            ) : (
-              <p class="text-arena-muted italic">Submission instructions will be posted soon.</p>
-            )}
-          </section>
+              <!-- Submission Method (GAS fallback) -->
+              <section>
+                <h2 class="text-xs font-semibold uppercase tracking-widest text-orange-500 mb-3">How to Submit</h2>
+                {comp.Submission ? (
+                  <p class="text-arena-ink leading-relaxed whitespace-pre-wrap">{comp.Submission}</p>
+                ) : (
+                  <p class="text-arena-muted italic">Submission instructions will be posted soon.</p>
+                )}
+              </section>
 
-          <!-- Terms -->
-          <section>
-            <h2 class="text-xs font-semibold uppercase tracking-widest text-orange-500 mb-3">Terms & Conditions</h2>
-            {comp.Terms ? (
-              <p class="text-arena-ink leading-relaxed whitespace-pre-wrap">{comp.Terms}</p>
-            ) : (
-              <p class="text-arena-muted">
-                By joining this competition you agree to the{' '}
-                <a href="/agreement" target="_blank" class="text-sky-500 hover:underline">Participant Agreement</a>.
-              </p>
-            )}
-          </section>
+              <!-- Terms (GAS fallback) -->
+              <section>
+                <h2 class="text-xs font-semibold uppercase tracking-widest text-orange-500 mb-3">Terms & Conditions</h2>
+                {comp.Terms ? (
+                  <p class="text-arena-ink leading-relaxed whitespace-pre-wrap">{comp.Terms}</p>
+                ) : (
+                  <p class="text-arena-muted">
+                    By joining this competition you agree to the{' '}
+                    <a href="/agreement" target="_blank" class="text-sky-500 hover:underline">Participant Agreement</a>.
+                  </p>
+                )}
+              </section>
 
-          <!-- Announcements -->
-          {comp.Announcements && (
-            <section>
-              <h2 class="text-xs font-semibold uppercase tracking-widest text-orange-500 mb-3">Announcements</h2>
-              <div class="bg-orange-50 border border-orange-200 rounded-xl px-5 py-4">
-                <p class="text-sm text-orange-800 leading-relaxed whitespace-pre-wrap">{comp.Announcements}</p>
-              </div>
-            </section>
+              <!-- Announcements (GAS fallback) -->
+              {comp.Announcements && (
+                <section>
+                  <h2 class="text-xs font-semibold uppercase tracking-widest text-orange-500 mb-3">Announcements</h2>
+                  <div class="bg-orange-50 border border-orange-200 rounded-xl px-5 py-4">
+                    <p class="text-sm text-orange-800 leading-relaxed whitespace-pre-wrap">{comp.Announcements}</p>
+                  </div>
+                </section>
+              )}
+            </>
           )}
 
         </div>

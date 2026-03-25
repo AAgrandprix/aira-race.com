@@ -11,7 +11,7 @@
   },
   "hero": {
     "tagline": "Race Your Algorithm.",
-    "subtitle": "The ultimate playground for AI learners and researchers to master decision-making under constraints.",
+    "subtitle": "It's not about speed. It's about intelligence under constraints.",
     "primaryCTA": { "text": "Start the Tutorial", "href": "#getting-started" },
     "secondaryCTA": { "text": "View Competitions", "href": "#competitions" }
   },
