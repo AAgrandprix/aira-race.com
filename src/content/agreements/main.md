@@ -57,7 +57,8 @@ This Article 3 applies only to Competitions governed by this version of the Agre
 - (d) Your full compliance with this Agreement and all applicable Competition rules.
 **4.3** aira reserves the right to withhold or reclaim a Prize if a Participant is found to have violated this Agreement.
 **4.4 Tax Responsibility.** You are solely responsible for all applicable taxes, duties, and withholding obligations on any Prize received. aira makes no representations regarding the tax treatment of Prizes in your jurisdiction. We recommend consulting a local tax professional.
-**4.5** Payment methods and timing will be specified in the rules of each Competition.
+**4.5** Payment timing will be specified in the rules of each Competition.
+**4.6 PayPal Requirement — No Exceptions.** All prize disbursements are made exclusively via PayPal transfer. A verified PayPal account is required to receive payment. If a Participant does not hold a verified PayPal account, or is unable to receive payment via PayPal for any reason, the Participant's right to the Prize shall be **automatically forfeited**. No alternative payment methods will be provided under any circumstances, and aira bears no liability for forfeiture resulting from the absence or unavailability of a PayPal account.
 
 ## Article 11 – Governing Law and Dispute Resolution
 **11.1 Governing Law.** This Agreement shall be governed by and construed in accordance with the laws of **Japan**, without regard to its conflict of law provisions.
@@ -68,7 +69,6 @@ This Article 3 applies only to Competitions governed by this version of the Agre
 **13.5 Contact and Operator Information.**
 - **Business Name:** AA.RACE
 - **Platform:** aira (aira-race.com)
-- **Email:** aira.race.official@gmail.com
-- **Address:** [Address to be added]
-- **Phone:** [Phone number to be added]
+- **Email:** satoru@aira-race.com
+- **Address:** 3F Mutsumi Building, 10-48 Kitasaiwai 2-chome, Nishi-ku, Yokohama, Kanagawa 220-0004, Japan（神奈川県横浜市西区北幸二丁目10番48号 むつみビル3階）
 - **Representative:** Satoru Ohmori (大森 智) *(disclosed as required under the Act on Specified Commercial Transactions)*
