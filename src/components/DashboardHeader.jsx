@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
-import { doc, getDoc, updateDoc, collection, query, where, getDocs } from 'firebase/firestore';
+import { doc, getDoc, updateDoc, runTransaction, setDoc, deleteDoc } from 'firebase/firestore';
 import { auth, db } from '../lib/firebase';
 
 const NAME_REGEX = /^[A-Za-z0-9_]{1,16}$/;
@@ -72,7 +72,6 @@ export default function DashboardHeader() {
   const handleSave = async () => {
     if (!userData?.uid) return;
 
-    // Client-side validation
     const validationError = validateDisplayName(editForm.displayName);
     if (validationError) {
       setNameError(validationError);
@@ -80,26 +79,27 @@ export default function DashboardHeader() {
     }
 
     setIsSaving(true);
+    const nameChanged = editForm.displayName !== userData.displayName;
+
     try {
-      // Uniqueness check: skip if name unchanged
-      if (editForm.displayName !== userData.displayName) {
-        const q = query(collection(db, 'users'), where('displayName', '==', editForm.displayName));
-        const snapshot = await getDocs(q);
-        const taken = snapshot.docs.some(d => d.id !== userData.uid);
-        if (taken) {
-          setNameError('This name is already taken. Please choose another.');
-          setIsSaving(false);
-          return;
-        }
-      }
+      if (nameChanged) {
+        // Atomic name claim via transaction:
+        // displayNames/{name} acts as a lock — only one uid can hold each name.
+        const newNameRef = doc(db, 'displayNames', editForm.displayName);
+        const oldNameRef = doc(db, 'displayNames', userData.displayName);
+        const userRef    = doc(db, 'users', userData.uid);
 
-      await updateDoc(doc(db, 'users', userData.uid), {
-        displayName: editForm.displayName,
-        country: editForm.country,
-      });
+        await runTransaction(db, async (tx) => {
+          const newNameSnap = await tx.get(newNameRef);
+          if (newNameSnap.exists() && newNameSnap.data().uid !== userData.uid) {
+            throw new Error('NAME_TAKEN');
+          }
+          tx.delete(oldNameRef);
+          tx.set(newNameRef, { uid: userData.uid });
+          tx.update(userRef, { displayName: editForm.displayName, country: editForm.country });
+        });
 
-      // Sync new display name to Google Sheets (User_Registry C列)
-      if (editForm.displayName !== userData.displayName) {
+        // Sync to Google Sheets (fire-and-forget)
         const gasUrl = import.meta.env.PUBLIC_GAS_API_URL;
         if (gasUrl) {
           fetch(gasUrl, {
@@ -111,14 +111,21 @@ export default function DashboardHeader() {
             })
           }).catch(err => console.warn('GAS name sync failed:', err));
         }
+      } else {
+        // Name unchanged — only update country
+        await updateDoc(doc(db, 'users', userData.uid), { country: editForm.country });
       }
 
       setUserData(prev => ({ ...prev, ...editForm }));
       setIsEditing(false);
       setNameError(null);
     } catch (e) {
-      console.error('Update failed:', e);
-      alert('Failed to save. Please try again.');
+      if (e.message === 'NAME_TAKEN') {
+        setNameError('This name is already taken. Please choose another.');
+      } else {
+        console.error('Update failed:', e);
+        alert('Failed to save. Please try again.');
+      }
     } finally {
       setIsSaving(false);
     }
