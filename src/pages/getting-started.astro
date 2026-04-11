@@ -10,13 +10,17 @@ const GITHUB_REPO = 'https://github.com/aira-race/virtual-robot-race';
 const steps = [
   {
     number: '01',
-    title: 'Fork the Repository',
+    title: 'Fork & Clone the Repository',
     color: 'sky',
-    description: 'Forking creates your own copy on GitHub where you can save progress and experiment freely.',
+    description: 'Fork the repo to your GitHub account, then clone it to your PC in one click using GitHub Desktop — no terminal needed.',
     items: [
-      { type: 'text', content: 'Open the repository and click the Fork button in the top-right corner.' },
+      { type: 'note', content: 'GitHub Desktop must be installed before this step.' },
+      { type: 'link', label: 'Download GitHub Desktop →', href: 'https://desktop.github.com/' },
+      { type: 'video', src: '/fork-demo.mp4' },
+      { type: 'text', content: '① Click the Fork button in the top-right corner of the repository page.' },
       { type: 'link', label: 'Open virtual-robot-race on GitHub →', href: GITHUB_REPO },
-      { type: 'text', content: 'Then clone your fork to your local machine:' },
+      { type: 'text', content: '② After forking, click Code → Open with GitHub Desktop. GitHub Desktop will ask where to save the folder — choose somewhere easy to find.' },
+      { type: 'note', content: 'Prefer the terminal? Clone manually with the command below.' },
       { type: 'code', lang: 'bash', content: 'git clone https://github.com/YOUR_NAME/virtual-robot-race.git\ncd virtual-robot-race' },
     ],
   },
@@ -26,7 +30,8 @@ const steps = [
     color: 'violet',
     description: 'Run the setup script to install all Python dependencies automatically.',
     items: [
-      { type: 'text', content: 'On Windows, double-click or run from Command Prompt / PowerShell:' },
+      { type: 'video', src: '/setup-env.mp4' },
+      { type: 'text', content: 'On Windows, open the cloned folder in Explorer and double-click setup_env.bat.' },
       { type: 'code', lang: 'cmd', content: 'setup_env.bat' },
       { type: 'text', content: 'Or manually with pip:' },
       { type: 'code', lang: 'bash', content: 'pip install -r requirements.txt' },
@@ -37,11 +42,14 @@ const steps = [
     number: '03',
     title: 'Set Your Race Name',
     color: 'orange',
-    description: 'Your race name links your results to the leaderboard. It must match your aira display name exactly.',
+    description: 'Launch the simulator from VSCode — a setup window opens where you can enter your race name.',
     items: [
-      { type: 'text', content: 'Open config.txt in the repository root and set your name:' },
-      { type: 'code', lang: 'ini', content: '# config.txt\nNAME=YourAiraName          # ← A-Z, a-z, 0-9, underscore, max 16 chars\nCOMPETITION_NAME=Tutorial  # use Tutorial for practice\nRACE_FLAG=0                # keep 0 for practice runs' },
-      { type: 'note', content: 'Your aira display name must match NAME= exactly. Set it in your dashboard before racing.' },
+      { type: 'text', content: 'Open the cloned folder in VSCode, then run start.bat from the integrated terminal:' },
+      { type: 'code', lang: 'bat', content: 'start.bat' },
+      { type: 'video', src: '/vscode-launch.mp4' },
+      { type: 'text', content: 'The aira launcher opens. Enter your name in the Name field, then click START.' },
+      { type: 'image', src: '/gui-launcher.png', alt: 'aira launcher — Name field' },
+      { type: 'note', content: 'Your display name must match the Name field exactly. Set it in your dashboard before racing.' },
       { type: 'link', label: 'Set your display name in Dashboard →', href: '/dashboard' },
     ],
   },
@@ -49,10 +57,9 @@ const steps = [
     number: '04',
     title: 'Launch the Simulator',
     color: 'emerald',
-    description: 'Run a single command — Unity launches automatically and the race begins.',
+    description: 'Click START in the launcher — Unity opens and the race begins automatically.',
     items: [
-      { type: 'text', content: 'Run main.py from your terminal:' },
-      { type: 'code', lang: 'bash', content: 'python main.py' },
+      { type: 'text', content: 'Once you have entered your name, click START in the launcher.' },
       { type: 'note', content: 'Unity launches automatically. You do not need to start it manually.' },
     ],
   },
@@ -157,6 +164,18 @@ const colorMap: Record<string, { badge: string; border: string; num: string; lin
             <!-- Step content -->
             <div class="space-y-4 ml-14">
               {step.items.map((item) => {
+                if (item.type === 'video') {
+                  return (
+                    <video
+                      src={item.src}
+                      autoplay
+                      loop
+                      muted
+                      playsinline
+                      class="w-full rounded-xl border border-zinc-200 shadow-sm"
+                    />
+                  );
+                }
                 if (item.type === 'text') {
                   return <p class="text-sm text-arena-muted">{item.content}</p>;
                 }
@@ -185,6 +204,15 @@ const colorMap: Record<string, { badge: string; border: string; num: string; lin
                       <!-- Code content -->
                       <pre class="bg-zinc-950 text-zinc-100 px-5 py-4 text-xs font-mono overflow-x-auto whitespace-pre leading-relaxed m-0">{item.content}</pre>
                     </div>
+                  );
+                }
+                if (item.type === 'image') {
+                  return (
+                    <img
+                      src={item.src}
+                      alt={item.alt}
+                      class="w-full max-w-sm rounded-xl border border-zinc-200 shadow-sm"
+                    />
                   );
                 }
                 if (item.type === 'note') {
