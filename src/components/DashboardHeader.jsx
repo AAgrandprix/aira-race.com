@@ -97,6 +97,22 @@ export default function DashboardHeader() {
         displayName: editForm.displayName,
         country: editForm.country,
       });
+
+      // Sync new display name to Google Sheets (User_Registry C列)
+      if (editForm.displayName !== userData.displayName) {
+        const gasUrl = import.meta.env.PUBLIC_GAS_API_URL;
+        if (gasUrl) {
+          fetch(gasUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            body: JSON.stringify({
+              type: 'UPDATE_NAME',
+              payload: { uid: userData.uid, newDisplayName: editForm.displayName }
+            })
+          }).catch(err => console.warn('GAS name sync failed:', err));
+        }
+      }
+
       setUserData(prev => ({ ...prev, ...editForm }));
       setIsEditing(false);
       setNameError(null);
