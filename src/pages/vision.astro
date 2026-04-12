@@ -5,7 +5,7 @@ import Footer from '../components/Footer.astro';
 import landing from '../data/landing.json';
 
 const pageTitle = "Vision | aira";
-const pageDescription = "The vision behind the aira project.";
+const pageDescription = "The philosophy and long-term vision behind aira — Autonomous Intelligence Racing Arena.";
 ---
 
 <Layout
@@ -19,14 +19,335 @@ const pageDescription = "The vision behind the aira project.";
   lang={landing.site.lang}
 >
   <Header />
-  <main class="max-w-3xl mx-auto px-4 sm:px-6 py-24">
-    <h1 class="text-4xl font-bold tracking-tight text-white sm:text-5xl">Our Vision</h1>
-    <p class="mt-6 text-lg leading-8 text-slate-400">
-      This page will detail the vision and long-term goals of the aira project.
-    </p>
-    <p class="mt-4 text-slate-400">
-      Content to be added here based on the project's pitch deck and future plans.
-    </p>
+
+  <style>
+    :root {
+      --bg-deep:   #080C14;
+      --bg-panel:  #0D1420;
+      --bg-border: #1A2540;
+      --bg-dim:    #232B40;
+      --cyan:      #00D4FF;
+      --cyan-dim:  #0088AA;
+      --cyan-glow: #003344;
+      --amber:     #FF8C00;
+      --amber-dim: #7A4200;
+      --text-pri:  #E8EEF8;
+      --text-sec:  #4A5878;
+    }
+
+    .vision-main {
+      background: var(--bg-deep);
+      color: var(--text-pri);
+    }
+
+    /* Amber top line */
+    .vision-main::before {
+      content: '';
+      display: block;
+      height: 2px;
+      background: var(--amber);
+    }
+
+    .sec-label {
+      font-family: 'Courier New', monospace;
+      font-size: 0.7rem;
+      font-weight: normal;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--amber);
+    }
+
+    .hud-border {
+      border: 1px solid var(--bg-border);
+      position: relative;
+    }
+
+    /* L-corner brackets */
+    .hud-border::before,
+    .hud-border::after {
+      content: '';
+      position: absolute;
+      width: 14px;
+      height: 14px;
+      border-color: var(--cyan);
+      border-style: solid;
+    }
+    .hud-border::before {
+      top: -1px; left: -1px;
+      border-width: 1px 0 0 1px;
+    }
+    .hud-border::after {
+      bottom: -1px; right: -1px;
+      border-width: 0 1px 1px 0;
+    }
+
+    .cyan-text  { color: var(--cyan); }
+    .amber-text { color: var(--amber); }
+    .sec-text   { color: var(--text-sec); }
+    .panel-bg   { background: var(--bg-panel); }
+    .border-col { border-color: var(--bg-border); }
+
+    .value-card {
+      background: var(--bg-panel);
+      border: 1px solid var(--bg-border);
+      padding: 2rem 1.5rem;
+      position: relative;
+    }
+    .value-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: var(--cyan);
+    }
+
+    .roadmap-dot-active { background: var(--cyan); box-shadow: 0 0 8px var(--cyan); }
+    .roadmap-dot        { background: var(--bg-border); }
+  </style>
+
+  <main class="vision-main">
+
+    <!-- Hero -->
+    <section style="border-bottom: 1px solid var(--bg-border);">
+      <div class="max-w-3xl mx-auto px-4 sm:px-6 pt-32 pb-24 text-center">
+        <span class="sec-label">Vision</span>
+        <h1 class="mt-6 text-5xl sm:text-7xl font-light tracking-tight leading-tight" style="font-family:'Courier New',monospace;">
+          <span style="color:var(--cyan); font-weight:700;">Explainable</span><br/>Intelligence.
+        </h1>
+        <p class="mt-8 text-lg max-w-xl mx-auto leading-relaxed" style="color:var(--text-sec);">
+          aira is not a game. It is not an AI demo.<br/>
+          It is an open laboratory — where intelligence is tested, compared, and held accountable.
+        </p>
+      </div>
+    </section>
+
+    <!-- The Question -->
+    <section style="border-bottom: 1px solid var(--bg-border);">
+      <div class="max-w-3xl mx-auto px-4 sm:px-6 py-20">
+        <span class="sec-label">The Question</span>
+        <h2 class="mt-4 text-2xl sm:text-3xl font-light tracking-tight" style="color:var(--text-pri);">
+          The democratization of AI has begun.<br/>
+          But access to <em>real understanding</em> has not.
+        </h2>
+        <p class="mt-6 leading-relaxed" style="color:var(--text-sec);">
+          Advanced AI is no longer exclusive to research labs and tech giants.
+          Yet the opportunity to truly master it — to build, test, and verify intelligent systems
+          against real constraints — remains out of reach for most.
+        </p>
+        <div class="mt-10 hud-border p-6" style="background:var(--bg-panel);">
+          <p class="text-xl sm:text-2xl font-light italic leading-relaxed" style="color:var(--text-pri);">
+            "Given limited information, limited energy, and limited time —<br/>
+            what decision should intelligence make?"
+          </p>
+          <p class="mt-4 text-sm" style="color:var(--text-sec);">
+            There is no single answer. Competition exists — and outcomes are real. aira makes this visible.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- The Problem -->
+    <section style="border-bottom: 1px solid var(--bg-border); background:var(--bg-panel);">
+      <div class="max-w-3xl mx-auto px-4 sm:px-6 py-20">
+        <span class="sec-label">The Problem</span>
+        <h2 class="mt-4 text-2xl sm:text-3xl font-light tracking-tight" style="color:var(--text-pri);">
+          Four barriers stand between people and AI engineering.
+        </h2>
+        <div class="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {[
+            { label: 'Expensive hardware',        desc: 'Real robots cost thousands. Most learners never touch one.' },
+            { label: 'Overcomplicated frameworks', desc: 'The tooling requires expertise before any learning begins.' },
+            { label: 'Abstract problem settings',  desc: 'Benchmarks disconnected from physical reality.' },
+            { label: 'Gatekeeping',                desc: 'Degree, institution, and age still determine who participates.' },
+          ].map(item => (
+            <div style={`background:var(--bg-deep);border:1px solid var(--bg-border);padding:1.25rem 1.5rem;`}>
+              <p class="text-xs font-mono mb-2" style="color:var(--amber);">✕ {item.label}</p>
+              <p class="text-sm" style="color:var(--text-sec);">{item.desc}</p>
+            </div>
+          ))}
+        </div>
+
+        <!-- Easy / Smart / Low-cost -->
+        <p class="mt-12 sec-label">aira removes all four.</p>
+        <div class="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-4">
+          {[
+            { key: 'EASY',     desc: 'No hardware needed. Clone the repo, run the simulator, race.' },
+            { key: 'SMART',    desc: 'Real physics. Real energy constraints. Real outcomes.' },
+            { key: 'LOW-COST', desc: 'Free to enter. Open source. No gatekeeping.' },
+          ].map(item => (
+            <div class="value-card">
+              <p class="text-2xl font-bold font-mono" style="color:var(--cyan);">{item.key}</p>
+              <p class="mt-3 text-sm leading-relaxed" style="color:var(--text-sec);">{item.desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- The Arena -->
+    <section style="border-bottom: 1px solid var(--bg-border);">
+      <div class="max-w-3xl mx-auto px-4 sm:px-6 py-20">
+        <span class="sec-label">The Arena</span>
+        <h2 class="mt-4 text-2xl sm:text-3xl font-light tracking-tight" style="color:var(--text-pri);">
+          A deceptively simple problem.<br/>An infinite solution space.
+        </h2>
+        <p class="mt-6 leading-relaxed" style="color:var(--text-sec);">
+          At its core, aira is a MIMO (Multi-Input / Multi-Output) control problem.
+          Every approach is welcome.
+        </p>
+        <div class="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div style="background:var(--bg-panel);border:1px solid var(--bg-border);padding:1.5rem;">
+            <p class="sec-label mb-4">Inputs</p>
+            <ul class="space-y-2 text-sm font-mono" style="color:var(--text-pri);">
+              <li><span style="color:var(--cyan);">→</span> Camera image</li>
+              <li><span style="color:var(--cyan);">→</span> Battery level (SoC)</li>
+            </ul>
+          </div>
+          <div style="background:var(--bg-panel);border:1px solid var(--bg-border);padding:1.5rem;">
+            <p class="sec-label mb-4">Outputs</p>
+            <ul class="space-y-2 text-sm font-mono" style="color:var(--text-pri);">
+              <li><span style="color:var(--cyan);">←</span> Drive torque</li>
+              <li><span style="color:var(--cyan);">←</span> Steering angle</li>
+            </ul>
+          </div>
+        </div>
+        <div class="mt-4 flex flex-wrap gap-2">
+          {['Rule-based', 'End-to-End AI', 'Hybrid', 'Behavior Cloning', 'Reinforcement Learning', 'VLA'].map(m => (
+            <span class="text-xs font-mono px-3 py-1" style="color:var(--text-sec);border:1px solid var(--bg-border);">{m}</span>
+          ))}
+        </div>
+        <div class="mt-10 hud-border p-6" style="background:var(--bg-panel);">
+          <p class="text-lg font-light italic" style="color:var(--text-pri);">
+            "The ideal goal state: energy depletes exactly as the robot crosses the finish line."
+          </p>
+          <p class="mt-2 text-sm font-mono" style="color:var(--amber);">aira models an electric vehicle. Full throttle alone won't win.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Explainability -->
+    <section style="border-bottom: 1px solid var(--bg-border); background:var(--bg-panel);">
+      <div class="max-w-3xl mx-auto px-4 sm:px-6 py-20">
+        <span class="sec-label">Explainability</span>
+        <h2 class="mt-4 text-2xl sm:text-3xl font-light tracking-tight" style="color:var(--text-pri);">
+          Winning is not enough.<br/>You must explain <em>why</em> you won.
+        </h2>
+        <p class="mt-6 leading-relaxed" style="color:var(--text-sec);">
+          Logs, state transitions, and internal reasoning are not debugging artifacts.
+          In aira, they are part of the competition itself.
+        </p>
+        <div class="mt-10 space-y-3">
+          {[
+            'Why did the algorithm make that turn?',
+            'Why was a different path not chosen?',
+            'Which decision was the turning point?',
+          ].map(q => (
+            <div class="flex items-start gap-3" style="border-left:2px solid var(--cyan);padding-left:1rem;">
+              <p class="text-sm font-mono" style="color:var(--text-pri);">{q}</p>
+            </div>
+          ))}
+        </div>
+        <p class="mt-8 text-sm leading-relaxed" style="color:var(--text-sec);">
+          An algorithm that can answer these questions is, in aira's definition,
+          a <strong style="color:var(--text-pri);">complete intelligence</strong>.
+        </p>
+      </div>
+    </section>
+
+    <!-- Who Can Join -->
+    <section style="border-bottom: 1px solid var(--bg-border);">
+      <div class="max-w-3xl mx-auto px-4 sm:px-6 py-20">
+        <span class="sec-label">Who Can Join</span>
+        <h2 class="mt-4 text-2xl sm:text-3xl font-light tracking-tight" style="color:var(--text-pri);">
+          Anyone. No exceptions.
+        </h2>
+        <p class="mt-6 leading-relaxed" style="color:var(--text-sec);">
+          No degree. No institution. No age limit. No region limit.<br/>
+          aira is online, open, and free to enter.
+        </p>
+        <div class="mt-8 flex flex-wrap gap-2">
+          {['High School Students', 'University Students', 'Working Engineers', 'Researchers', 'Companies', 'Educators'].map(g => (
+            <span class="text-xs font-mono px-3 py-1.5" style="color:var(--cyan);border:1px solid var(--cyan-dim);">{g}</span>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- The Future -->
+    <section style="border-bottom: 1px solid var(--bg-border); background:var(--bg-panel);">
+      <div class="max-w-3xl mx-auto px-4 sm:px-6 py-20">
+        <span class="sec-label">The Future</span>
+        <h2 class="mt-4 text-2xl sm:text-3xl font-light tracking-tight" style="color:var(--text-pri);">
+          From virtual to physical.<br/>From racing to exploration.
+        </h2>
+        <p class="mt-6 leading-relaxed" style="color:var(--text-sec);">
+          AI trained in the virtual arena will run on real hardware — unchanged.
+          Train once. Deploy anywhere. The constraints remain the same.
+        </p>
+        <div class="mt-10 space-y-0">
+          {[
+            { phase: 'NOW',    label: 'Virtual Robot Race',  desc: 'Simulation-based competition. Algorithm-first.',                         active: true  },
+            { phase: 'NEXT',   label: 'Digital Twin',        desc: 'Virtual algorithms deployed on physical hardware.',                       active: false },
+            { phase: 'FUTURE', label: 'Beyond Vehicles',     desc: 'Humanoid robots. Planetary exploration. Same constraints — wider stage.', active: false },
+          ].map((item, i) => (
+            <div class="flex gap-5" style={i < 2 ? 'margin-bottom:0;' : ''}>
+              <div class="flex flex-col items-center" style="min-width:12px;">
+                <div class={`h-3 w-3 mt-1 shrink-0 ${item.active ? 'roadmap-dot-active' : 'roadmap-dot'}`}></div>
+                {i < 2 && <div class="w-px flex-1 mt-1" style="background:var(--bg-border);min-height:3rem;"></div>}
+              </div>
+              <div class="pb-8">
+                <span class="text-xs font-mono" style={`color:${item.active ? 'var(--amber)' : 'var(--text-sec)'};`}>{item.phase}</span>
+                <p class="mt-1 text-base font-mono" style={`color:${item.active ? 'var(--text-pri)' : 'var(--bg-dim)'};`}>{item.label}</p>
+                <p class="mt-1 text-sm" style={`color:${item.active ? 'var(--text-sec)' : 'var(--bg-dim)'};`}>{item.desc}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Founder's Note -->
+    <section style="border-bottom: 1px solid var(--bg-border);">
+      <div class="max-w-3xl mx-auto px-4 sm:px-6 py-20">
+        <span class="sec-label">Founder's Note</span>
+        <div class="mt-8 hud-border p-8" style="background:var(--bg-panel);">
+          <p class="text-lg font-light italic leading-relaxed" style="color:var(--text-pri);">
+            "aira was born from the experience of a developer whose life was changed by robot competitions.
+            Not exclusive. Not expensive.
+            <strong style="color:var(--cyan);">An open robocon — for everyone, once more.</strong>
+            aira is that answer."
+          </p>
+          <footer class="mt-6 text-xs font-mono" style="color:var(--text-sec);">— Satoru Ohmori, Founder / aira</footer>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section>
+      <div class="max-w-3xl mx-auto px-4 sm:px-6 py-20 text-center">
+        <h2 class="text-2xl sm:text-3xl font-light tracking-tight" style="color:var(--text-pri);">
+          Ready to race your algorithm?
+        </h2>
+        <p class="mt-4 text-sm font-mono" style="color:var(--text-sec);">Set up your environment and submit your first result in under 30 minutes.</p>
+        <div class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
+          <a
+            href="/getting-started"
+            class="inline-flex items-center px-8 py-3 text-sm font-mono font-bold transition-opacity hover:opacity-80"
+            style="background:var(--cyan);color:var(--bg-deep);"
+          >
+            START RACING →
+          </a>
+          <a
+            href="/competitions"
+            class="inline-flex items-center px-8 py-3 text-sm font-mono transition-colors"
+            style="color:var(--cyan);border:1px solid var(--bg-border);"
+          >
+            VIEW COMPETITIONS
+          </a>
+        </div>
+      </div>
+    </section>
+
   </main>
   <Footer {...landing.footer} />
 </Layout>
