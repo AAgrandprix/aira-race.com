@@ -1,0 +1,22 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // User profiles — readable by any logged-in user, writable only by the owner
+    match /users/{userId} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null && request.auth.uid == userId;
+    }
+
+    // Display name registry — used for atomic uniqueness guarantee
+    // Each document ID is the display name; data is { uid: string }
+    // A user may only write a document that carries their own uid
+    match /displayNames/{displayName} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null &&
+        (resource == null || resource.data.uid == request.auth.uid) &&
+        (request.resource == null || request.resource.data.uid == request.auth.uid);
+    }
+
+  }
+}
