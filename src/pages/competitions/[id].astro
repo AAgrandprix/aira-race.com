@@ -137,19 +137,45 @@ const CompContent = docLoader ? (await docLoader() as any).Content : null;
 
           <!-- Rules & below: MD file if available, otherwise GAS fields -->
           {CompContent ? (
-            <article class="
-              prose max-w-none
-              prose-headings:font-semibold
-              prose-h2:text-base prose-h2:uppercase prose-h2:tracking-widest prose-h2:text-orange-500 prose-h2:mt-8 prose-h2:mb-3
-              prose-p:text-arena-ink prose-p:leading-relaxed
-              prose-strong:text-arena-ink
-              prose-a:text-sky-500 prose-a:no-underline hover:prose-a:underline
-              prose-ul:text-arena-ink prose-li:text-arena-ink
-              prose-code:bg-zinc-100 prose-code:text-zinc-700 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:text-xs prose-code:before:content-none prose-code:after:content-none
-              prose-hr:border-arena-border
-            ">
-              <CompContent />
-            </article>
+            <>
+              <article class="
+                prose max-w-none
+                prose-headings:font-semibold
+                prose-h2:text-base prose-h2:uppercase prose-h2:tracking-widest prose-h2:text-orange-500 prose-h2:mt-8 prose-h2:mb-3
+                prose-p:text-arena-ink prose-p:leading-relaxed
+                prose-strong:text-arena-ink
+                prose-a:text-sky-500 prose-a:no-underline hover:prose-a:underline
+                prose-ul:text-arena-ink prose-li:text-arena-ink
+                prose-code:bg-zinc-100 prose-code:text-zinc-700 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:text-xs prose-code:before:content-none prose-code:after:content-none
+                prose-hr:border-arena-border
+              ">
+                <CompContent />
+              </article>
+
+              <!-- How to Join video (static — always renders) -->
+              <video
+                src="/How-to-join.mp4"
+                autoplay
+                muted
+                loop
+                playsinline
+                class="w-full rounded-xl mt-6"
+              ></video>
+
+              <!-- Terms & Conditions (static — moved out of MD) -->
+              <section class="mt-10">
+                <h2 class="text-xs font-semibold uppercase tracking-widest text-orange-500 mb-3">Terms & Conditions</h2>
+                <p class="text-arena-ink leading-relaxed">
+                  By joining this competition you agree to the{' '}
+                  <a href="/agreement" target="_blank" class="text-sky-500 hover:underline">Participant Agreement</a>.
+                </p>
+                <ul class="mt-3 space-y-1.5 text-sm text-arena-ink list-disc list-inside">
+                  <li>Prize disbursement is via <a href="https://www.paypal.com" target="_blank" rel="noopener noreferrer" class="text-sky-500 hover:underline font-medium">PayPal</a> transfer only. A verified PayPal account is required to receive payment. If a winner cannot receive payment for any reason, the prize right is automatically forfeited — no exceptions.</li>
+                  <li>The aira team will contact winners at their registered email address with payment instructions and a response deadline. No reply within the deadline = prize forfeited.</li>
+                  <li>The aira team reserves the right to disqualify any entry found in violation of the competition rules or Participant Agreement.</li>
+                </ul>
+              </section>
+            </>
           ) : (
             <>
               <!-- Rules (GAS fallback) -->
@@ -324,35 +350,3 @@ const CompContent = docLoader ? (await docLoader() as any).Content : null;
   <Footer {...landing.footer} />
 </Layout>
 
-<script>
-  function injectHowToJoinVideo() {
-    const article = document.querySelector('article.prose');
-    if (!article) return;
-    const headings = article.querySelectorAll('h2');
-    for (const h2 of headings) {
-      if (h2.textContent.trim().toLowerCase() === 'how to join') {
-        let last = h2;
-        let next = h2.nextElementSibling;
-        while (next && next.tagName !== 'H2') {
-          last = next;
-          next = next.nextElementSibling;
-        }
-        const video = document.createElement('video');
-        video.src = '/How-to-join.mp4';
-        video.autoplay = true;
-        video.muted = true;
-        video.loop = true;
-        video.playsInline = true;
-        video.style.cssText = 'width:100%;border-radius:0.75rem;margin-top:1rem;';
-        last.insertAdjacentElement('afterend', video);
-        break;
-      }
-    }
-  }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', injectHowToJoinVideo);
-  } else {
-    injectHowToJoinVideo();
-  }
-</script>
