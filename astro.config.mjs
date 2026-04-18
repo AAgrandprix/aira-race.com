@@ -6,4 +6,7 @@ import react from '@astrojs/react';
 export default defineConfig({
   site: 'https://aira-race.com',
   integrations: [tailwind(), sitemap(), react()],
+  markdown: {
+    allowDangerousHtml: true,
+  },
 });
