@@ -323,3 +323,31 @@ const CompContent = docLoader ? (await docLoader() as any).Content : null;
   </main>
   <Footer {...landing.footer} />
 </Layout>
+
+<script>
+  // Inject How-to-join video after the "How to Join" section content
+  document.addEventListener('DOMContentLoaded', () => {
+    const article = document.querySelector('article.prose');
+    if (!article) return;
+    const headings = article.querySelectorAll('h2');
+    for (const h2 of headings) {
+      if (h2.textContent.trim().toLowerCase() === 'how to join') {
+        let last = h2;
+        let next = h2.nextElementSibling;
+        while (next && next.tagName !== 'H2') {
+          last = next;
+          next = next.nextElementSibling;
+        }
+        const video = document.createElement('video');
+        video.src = '/How-to-join.mp4';
+        video.autoplay = true;
+        video.muted = true;
+        video.loop = true;
+        video.playsInline = true;
+        video.style.cssText = 'width:100%;border-radius:0.75rem;margin-top:1rem;';
+        last.insertAdjacentElement('afterend', video);
+        break;
+      }
+    }
+  });
+</script>
