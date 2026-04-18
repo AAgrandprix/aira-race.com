@@ -325,8 +325,7 @@ const CompContent = docLoader ? (await docLoader() as any).Content : null;
 </Layout>
 
 <script>
-  // Inject How-to-join video after the "How to Join" section content
-  document.addEventListener('DOMContentLoaded', () => {
+  function injectHowToJoinVideo() {
     const article = document.querySelector('article.prose');
     if (!article) return;
     const headings = article.querySelectorAll('h2');
@@ -349,5 +348,11 @@ const CompContent = docLoader ? (await docLoader() as any).Content : null;
         break;
       }
     }
-  });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', injectHowToJoinVideo);
+  } else {
+    injectHowToJoinVideo();
+  }
 </script>
