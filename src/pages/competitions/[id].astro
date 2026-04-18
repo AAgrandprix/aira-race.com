@@ -152,15 +152,8 @@ const CompContent = docLoader ? (await docLoader() as any).Content : null;
                 <CompContent />
               </article>
 
-              <!-- How to Join video (static — always renders) -->
-              <video
-                src="/How-to-join.mp4"
-                autoplay
-                muted
-                loop
-                playsinline
-                class="w-full rounded-xl mt-6"
-              ></video>
+              <!-- How to Join video -->
+              <div class="mt-6" set:html={`<video src="/How-to-join.mp4" autoplay muted loop playsinline class="w-full aspect-video rounded-xl"></video>`} />
 
               <!-- Terms & Conditions (static — moved out of MD) -->
               <section class="mt-10">
