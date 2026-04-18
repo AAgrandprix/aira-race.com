@@ -1,11 +1,6 @@
 ---
 import landing from '../data/landing.json';
-
-export interface Props {
-  isLoggedIn?: boolean;
-}
-
-const { isLoggedIn = false } = Astro.props;
+import HeaderAuthButton from './HeaderAuthButton.jsx';
 
 const navLinks = [
   { text: 'Tutorial', href: '/getting-started' },
@@ -13,9 +8,6 @@ const navLinks = [
   { text: 'Ranking', href: '/leaderboard' },
   { text: 'Vision', href: '/vision' },
 ];
-
-const loginUrl = '/login';
-const dashboardUrl = '/dashboard';
 ---
 
 <header class="fixed top-0 left-0 right-0 z-50 bg-zinc-950/90 backdrop-blur-md border-b border-zinc-800">
@@ -41,23 +33,9 @@ const dashboardUrl = '/dashboard';
         </ul>
       </nav>
 
-      {/* Login/Dashboard button — outline style, glows on hover */}
+      {/* Login/Dashboard button — switches client-side based on Firebase auth state */}
       <div class="flex-none">
-        {isLoggedIn ? (
-          <a
-            href={dashboardUrl}
-            class="inline-flex items-center px-4 py-1.5 text-sm font-medium text-zinc-300 border border-zinc-700 rounded-md hover:border-white hover:text-white transition-colors"
-          >
-            Dashboard
-          </a>
-        ) : (
-          <a
-            href={loginUrl}
-            class="inline-flex items-center px-4 py-1.5 text-sm font-medium text-zinc-300 border border-zinc-700 rounded-md hover:border-white hover:text-white transition-colors"
-          >
-            Login
-          </a>
-        )}
+        <HeaderAuthButton client:load />
       </div>
 
       {/* TODO: Add mobile menu */}
