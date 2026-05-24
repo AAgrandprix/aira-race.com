@@ -35,9 +35,9 @@ const steps = [
       { type: 'code', lang: 'cmd', content: 'setup_env.bat' },
       { type: 'text', content: 'Or manually with pip:' },
       { type: 'code', lang: 'bash', content: 'pip install -r requirements.txt' },
-      { type: 'note', content: 'Python 3.12 or later is recommended (3.13 also works).' },
-      { type: 'text', content: 'If setup_env.bat fails with an error, Python may not be installed (or the version is below 3.12). Install it from the official site:' },
-      { type: 'link', label: 'Download Python →', href: 'https://www.python.org/downloads/' },
+      { type: 'note', content: 'Use Python 3.12 or 3.13. Python 3.14 is NOT supported — some dependencies fail to install.' },
+      { type: 'text', content: 'If setup_env.bat fails with an error, Python may not be installed (or you are on an unsupported version). Install 3.12 or 3.13 from the official site:' },
+      { type: 'link', label: 'Download Python 3.12 / 3.13 →', href: 'https://www.python.org/downloads/' },
     ],
   },
   {
@@ -125,7 +125,7 @@ const colorMap: Record<string, { badge: string; border: string; num: string; lin
           </div>
           <div class="flex items-center gap-2 text-sm text-arena-muted">
             <span class="text-base">🐍</span>
-            <span><span class="font-medium text-arena-ink">Python 3.12</span>+</span>
+            <span><span class="font-medium text-arena-ink">Python 3.12 / 3.13</span> <span class="text-xs">(not 3.14)</span></span>
           </div>
           <div class="flex items-center gap-2 text-sm text-arena-muted">
             <span class="text-base">🖥</span>
