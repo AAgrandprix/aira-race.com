@@ -44,9 +44,11 @@ interface Props { comp: Competition; }
 const { comp } = Astro.props;
 
 const statusStyle: Record<string, { label: string; badge: string }> = {
-  Active:   { label: 'Active',   badge: 'bg-emerald-100 text-emerald-700 border border-emerald-200' },
-  Upcoming: { label: 'Upcoming', badge: 'bg-orange-100 text-orange-700 border border-orange-200' },
-  Ended:    { label: 'Ended',    badge: 'bg-zinc-100 text-zinc-500 border border-zinc-200' },
+  'Active':      { label: 'Active',      badge: 'bg-emerald-100 text-emerald-700 border border-emerald-200' },
+  'Upcoming':    { label: 'Upcoming',    badge: 'bg-orange-100 text-orange-700 border border-orange-200' },
+  'Late Submit': { label: 'Late Submit', badge: 'bg-amber-100 text-amber-700 border border-amber-200' },
+  'Closed':      { label: 'Closed',      badge: 'bg-zinc-100 text-zinc-500 border border-zinc-200' },
+  'Ended':       { label: 'Ended',       badge: 'bg-zinc-100 text-zinc-500 border border-zinc-200' },
 };
 function getStatus(raw: string) {
   const key = raw?.trim() ?? '';
