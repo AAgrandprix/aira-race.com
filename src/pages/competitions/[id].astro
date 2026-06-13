@@ -62,7 +62,7 @@ function formatDate(raw: string | undefined): string {
 }
 
 const st = getStatus(comp.Status);
-const isJoinable = comp.Status === 'Active' || comp.Status === 'Upcoming';
+const isJoinable = comp.Status === 'Active' || comp.Status === 'Upcoming' || comp.Status === 'Late Submit';
 const pageTitle = `${comp.Title || 'Competition'} | aira`;
 
 // Try to load the matching MD file for this competition
