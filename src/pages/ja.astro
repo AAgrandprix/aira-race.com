@@ -1,0 +1,313 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import landing from '../data/landing.json';
+
+const pageTitle = "aira｜アルゴリズムでロボットを走らせる ― 自律走行AI競技プラットフォーム";
+const pageDescription = "Pythonで仮想ロボットを制御し、バッテリー（SOC）制約下で最速を競う。参加無料・ハードウェア不要・オンライン完結。今すぐ参加者募集中。";
+---
+
+<Layout
+  title={pageTitle}
+  description={pageDescription}
+  canonicalUrl={landing.site.url + '/ja'}
+  ogImage={landing.site.ogImage}
+  siteName={landing.site.name}
+  ogTitle={pageTitle}
+  ogDescription={pageDescription}
+  lang="ja"
+>
+  <Header />
+
+  <style>
+    :root {
+      --bg-deep:   #080C14;
+      --bg-panel:  #0D1420;
+      --bg-border: #1A2540;
+      --bg-dim:    #232B40;
+      --cyan:      #00D4FF;
+      --cyan-dim:  #0088AA;
+      --cyan-glow: #003344;
+      --amber:     #FF8C00;
+      --amber-dim: #7A4200;
+      --text-pri:  #E8EEF8;
+      --text-sec:  #4A5878;
+    }
+
+    .ja-main {
+      background: var(--bg-deep);
+      color: var(--text-pri);
+    }
+
+    /* Amber top line */
+    .ja-main::before {
+      content: '';
+      display: block;
+      height: 2px;
+      background: var(--amber);
+    }
+
+    .sec-label {
+      font-family: 'Courier New', monospace;
+      font-size: 0.7rem;
+      font-weight: normal;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--amber);
+    }
+
+    .hud-border {
+      border: 1px solid var(--bg-border);
+      position: relative;
+    }
+
+    /* L-corner brackets */
+    .hud-border::before,
+    .hud-border::after {
+      content: '';
+      position: absolute;
+      width: 14px;
+      height: 14px;
+      border-color: var(--cyan);
+      border-style: solid;
+    }
+    .hud-border::before {
+      top: -1px; left: -1px;
+      border-width: 1px 0 0 1px;
+    }
+    .hud-border::after {
+      bottom: -1px; right: -1px;
+      border-width: 0 1px 1px 0;
+    }
+
+    .cyan-text  { color: var(--cyan); }
+    .amber-text { color: var(--amber); }
+    .sec-text   { color: var(--text-sec); }
+    .panel-bg   { background: var(--bg-panel); }
+    .border-col { border-color: var(--bg-border); }
+
+    .value-card {
+      background: var(--bg-panel);
+      border: 1px solid var(--bg-border);
+      padding: 2rem 1.5rem;
+      position: relative;
+    }
+    .value-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: var(--cyan);
+    }
+  </style>
+
+  <main class="ja-main">
+
+    <!-- ① Hero -->
+    <section style="border-bottom: 1px solid var(--bg-border);">
+      <div class="max-w-3xl mx-auto px-4 sm:px-6 pt-32 pb-24 text-center">
+        <span class="sec-label">For Japanese Developers</span>
+        <h1 class="mt-6 text-5xl sm:text-7xl font-light tracking-tight leading-tight" style="font-family:'Courier New',monospace;">
+          <span style="color:var(--cyan); font-weight:700;">知性だけで、</span><br/>勝て。
+        </h1>
+        <p class="mt-8 text-lg max-w-xl mx-auto leading-relaxed" style="color:var(--text-sec);">
+          ハードウェアは全員イコールコンディション。<br/>
+          勝敗を決めるのは、あなたの知性だけ。
+        </p>
+        <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+          <a
+            href="/getting-started"
+            class="inline-flex items-center px-8 py-3 text-sm font-mono font-bold transition-opacity hover:opacity-80"
+            style="background:var(--cyan);color:var(--bg-deep);"
+          >
+            チュートリアルを始める →
+          </a>
+          <a
+            href="/competitions"
+            class="inline-flex items-center px-8 py-3 text-sm font-mono transition-colors"
+            style="color:var(--cyan);border:1px solid var(--bg-border);"
+          >
+            開催中のコンペを見る
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ② What is aira -->
+    <section style="border-bottom: 1px solid var(--bg-border);">
+      <div class="max-w-3xl mx-auto px-4 sm:px-6 py-20">
+        <span class="sec-label">What is aira</span>
+        <h2 class="mt-4 text-2xl sm:text-3xl font-light tracking-tight" style="color:var(--text-pri);">
+          ゲームでも、AIデモでもない。<br/>知性を試す公開ラボ。
+        </h2>
+        <p class="mt-6 leading-relaxed" style="color:var(--text-sec);">
+          aira（Autonomous Intelligence Racing Arena）は、自律走行AIの競技プラットフォームです。
+          参加者はPythonでアルゴリズムを書き、仮想ロボットを制御してコース最速を競います。
+          必要なのはPC1台だけ。実機もクラウド契約も要りません。
+        </p>
+        <div class="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div style="background:var(--bg-panel);border:1px solid var(--bg-border);padding:1.5rem;">
+            <p class="sec-label mb-4">Inputs</p>
+            <ul class="space-y-2 text-sm font-mono" style="color:var(--text-pri);">
+              <li><span style="color:var(--cyan);">→</span> カメラ画像</li>
+              <li><span style="color:var(--cyan);">→</span> バッテリー残量（SOC）</li>
+            </ul>
+          </div>
+          <div style="background:var(--bg-panel);border:1px solid var(--bg-border);padding:1.5rem;">
+            <p class="sec-label mb-4">Outputs</p>
+            <ul class="space-y-2 text-sm font-mono" style="color:var(--text-pri);">
+              <li><span style="color:var(--cyan);">←</span> 駆動トルク</li>
+              <li><span style="color:var(--cyan);">←</span> ステアリング角</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ③ Why aira -->
+    <section style="border-bottom: 1px solid var(--bg-border); background:var(--bg-panel);">
+      <div class="max-w-3xl mx-auto px-4 sm:px-6 py-20">
+        <span class="sec-label">Why aira</span>
+        <h2 class="mt-4 text-2xl sm:text-3xl font-light tracking-tight" style="color:var(--text-pri);">
+          なぜ、aira か。
+        </h2>
+        <div class="mt-10 grid grid-cols-1 sm:grid-cols-3 gap-4">
+          {[
+            { key: '無料',           desc: '参加費ゼロ。賞金あり（各コンペ $100 USD）。' },
+            { key: 'インフラ負荷ゼロ', desc: 'AWS等のクラウド構築・課金は不要。リポジトリをForkして走らせるだけ。競技そのものに集中できる。' },
+            { key: '本物の制約',      desc: '電気自動車をモデル化。バッテリー残量(SOC)を使い切るタイミングまで含めた戦略勝負。フルスロットルだけでは勝てない。' },
+          ].map(item => (
+            <div class="value-card">
+              <p class="text-xl font-bold" style="color:var(--cyan);">{item.key}</p>
+              <p class="mt-3 text-sm leading-relaxed" style="color:var(--text-sec);">{item.desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- ④ How to Join -->
+    <section style="border-bottom: 1px solid var(--bg-border);">
+      <div class="max-w-3xl mx-auto px-4 sm:px-6 py-20">
+        <span class="sec-label">How to Join</span>
+        <h2 class="mt-4 text-2xl sm:text-3xl font-light tracking-tight" style="color:var(--text-pri);">
+          30分で、最初の1走を。
+        </h2>
+        <div class="mt-10 space-y-4">
+          {[
+            { n: '1', t: 'Fork & セットアップ', d: 'GitHubでリポジトリをForkし、エディタにクローン。' },
+            { n: '2', t: 'サンプルを走らせる',   d: '付属のサンプルコードで、すぐにロボットが走る様子を確認。' },
+            { n: '3', t: '初提出',              d: 'コードを改良し、結果をリーダーボードに提出。' },
+          ].map(step => (
+            <div class="flex items-start gap-4" style="border-left:2px solid var(--cyan);padding-left:1.25rem;">
+              <span class="text-2xl font-bold font-mono shrink-0" style="color:var(--cyan);">{step.n}</span>
+              <div>
+                <p class="text-base font-mono" style="color:var(--text-pri);">{step.t}</p>
+                <p class="mt-1 text-sm leading-relaxed" style="color:var(--text-sec);">{step.d}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+        <p class="mt-8 text-sm leading-relaxed" style="color:var(--text-sec);">
+          日本語の詳しいチュートリアル（<span class="font-mono" style="color:var(--text-pri);">docs/Lessons_JP</span>）がリポジトリ内に用意されています。
+        </p>
+        <a
+          href="https://github.com/aira-race/virtual-robot-race"
+          class="mt-6 inline-flex items-center px-8 py-3 text-sm font-mono font-bold transition-opacity hover:opacity-80"
+          style="background:var(--cyan);color:var(--bg-deep);"
+        >
+          GitHubでチュートリアルをForkする →
+        </a>
+      </div>
+    </section>
+
+    <!-- ⑤ Open Competitions -->
+    <section style="border-bottom: 1px solid var(--bg-border); background:var(--bg-panel);">
+      <div class="max-w-3xl mx-auto px-4 sm:px-6 py-20">
+        <span class="sec-label">Open Competitions</span>
+        <h2 class="mt-4 text-2xl sm:text-3xl font-light tracking-tight" style="color:var(--text-pri);">
+          今、参加者を募集しています。
+        </h2>
+        <div class="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="hud-border p-6" style="background:var(--bg-deep);">
+            <p class="text-xs font-mono" style="color:var(--amber);">Race_260601</p>
+            <p class="mt-2 text-lg font-mono" style="color:var(--text-pri);">Time Attack</p>
+            <p class="mt-3 text-sm leading-relaxed" style="color:var(--text-sec);">
+              リーダーボード形式。自分のタイムを登録して上位を狙う。賞金 $100。
+            </p>
+          </div>
+          <div class="hud-border p-6" style="background:var(--bg-deep);">
+            <p class="text-xs font-mono" style="color:var(--amber);">Race_260615</p>
+            <p class="mt-2 text-lg font-mono" style="color:var(--text-pri);">Race Competition</p>
+            <p class="mt-3 text-sm leading-relaxed" style="color:var(--text-sec);">
+              <strong style="color:var(--text-pri);">アルゴリズム募集中（締切 2026-07-15）</strong>。集まり次第、主催者PC上で実施しYouTube Liveで配信。賞金 $100。
+            </p>
+          </div>
+        </div>
+        <a
+          href="/competitions"
+          class="mt-8 inline-flex items-center px-8 py-3 text-sm font-mono transition-colors"
+          style="color:var(--cyan);border:1px solid var(--bg-border);"
+        >
+          コンペ詳細・ルールを見る →
+        </a>
+        <p class="mt-6 text-xs" style="color:var(--text-sec);">
+          参加は無料。賞金はPayPalで受賞者に送金（参加規約に明記）。
+        </p>
+      </div>
+    </section>
+
+    <!-- ⑥ Who Can Join -->
+    <section style="border-bottom: 1px solid var(--bg-border);">
+      <div class="max-w-3xl mx-auto px-4 sm:px-6 py-20">
+        <span class="sec-label">Who Can Join</span>
+        <h2 class="mt-4 text-2xl sm:text-3xl font-light tracking-tight" style="color:var(--text-pri);">
+          誰でも。例外なく。
+        </h2>
+        <p class="mt-6 leading-relaxed" style="color:var(--text-sec);">
+          学歴・所属・年齢・地域、すべて不問。<br/>
+          オンラインで、オープンで、参加無料。
+        </p>
+        <div class="mt-8 flex flex-wrap gap-2">
+          {['高校生', '大学生', '現役エンジニア', '研究者', '企業', '教育関係者'].map(g => (
+            <span class="text-xs font-mono px-3 py-1.5" style="color:var(--cyan);border:1px solid var(--cyan-dim);">{g}</span>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- ⑦ CTA -->
+    <section>
+      <div class="max-w-3xl mx-auto px-4 sm:px-6 py-20 text-center">
+        <h2 class="text-2xl sm:text-3xl font-light tracking-tight" style="color:var(--text-pri);">
+          アルゴリズムを、走らせる準備はできましたか？
+        </h2>
+        <p class="mt-4 text-sm font-mono" style="color:var(--text-sec);">環境構築から最初の結果提出まで、30分以内。</p>
+        <div class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
+          <a
+            href="/getting-started"
+            class="inline-flex items-center px-8 py-3 text-sm font-mono font-bold transition-opacity hover:opacity-80"
+            style="background:var(--cyan);color:var(--bg-deep);"
+          >
+            チュートリアルを始める →
+          </a>
+          <a
+            href="/competitions"
+            class="inline-flex items-center px-8 py-3 text-sm font-mono transition-colors"
+            style="color:var(--cyan);border:1px solid var(--bg-border);"
+          >
+            コンペを見る
+          </a>
+        </div>
+        <div class="mt-8">
+          <a href="/" class="text-xs font-mono transition-colors hover:opacity-80" style="color:var(--text-sec);">
+            English version →
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+  <Footer {...landing.footer} />
+</Layout>
