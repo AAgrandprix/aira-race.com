@@ -17,6 +17,9 @@ const C = {
 const FONT = "'Courier New', monospace";
 const TROPHY = ['🥇', '🥈', '🥉'];
 
+// Official baseline entries submitted by the aira team (shown as reference records)
+const BASELINE_NAMES = ['Sample_Algorithm', 'Andy'];
+
 function parseTime(str) {
   if (!str) return Infinity;
   const parts = String(str).split(':');
@@ -247,6 +250,14 @@ export default function LeaderboardTable({ raceId, showTabs } = {}) {
           {isTutorial
             ? '* ALL ENTRIES SHOWN — NEWEST FIRST. | SUBMITTED VIA AIRA BETA.'
             : '* BEST TIME PER USER IS SHOWN. | SUBMITTED VIA AIRA BETA.'}
+        </p>
+      )}
+
+      {/* Baseline entries note — shown only when official baselines appear on the board */}
+      {!loading && !error && rows.some(r => BASELINE_NAMES.includes(r.name)) && (
+        <p style={{ marginTop: 6, fontSize: 10, color: C.amber, letterSpacing: '0.06em' }}>
+          * SAMPLE_ALGORITHM AND ANDY ARE OFFICIAL BASELINE ENTRIES BY THE AIRA TEAM.
+          ANDY IS A PACE CAR — ITS TIME WILL BE EXCLUDED FROM THE FINAL RESULTS ON JUL 15.
         </p>
       )}
     </div>
