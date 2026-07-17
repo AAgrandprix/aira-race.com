@@ -62,7 +62,9 @@ function formatDate(raw: string | undefined): string {
 }
 
 const st = getStatus(comp.Status);
-const isJoinable = comp.Status === 'Active' || comp.Status === 'Upcoming' || comp.Status === 'Late Submit';
+const statusKey = (comp.Status ?? '').trim();
+const isJoinable = statusKey === 'Active' || statusKey === 'Upcoming' || statusKey === 'Late Submit';
+const isLateSubmit = statusKey === 'Late Submit';
 const pageTitle = `${comp.Title || 'Competition'} | aira`;
 
 // Try to load the matching MD file for this competition
@@ -126,6 +128,18 @@ const CompContent = docLoader ? (await docLoader() as any).Content : null;
 
         <!-- Left: main content -->
         <div class="lg:col-span-2 space-y-10">
+
+          <!-- Late Submit notice -->
+          {isLateSubmit && (
+            <div class="bg-amber-50 border border-amber-200 rounded-xl px-5 py-4">
+              <p class="text-sm font-semibold text-amber-800 mb-1">Late Submit period</p>
+              <p class="text-sm text-amber-800 leading-relaxed">
+                This competition has officially ended, so prizes are no longer awarded — but the track is still open!
+                Your time will still be posted on the leaderboard.
+                Register, set your token in aira Beta, and give it a try.
+              </p>
+            </div>
+          )}
 
           <!-- Overview -->
           <section>
